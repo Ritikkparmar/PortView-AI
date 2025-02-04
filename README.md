@@ -62,18 +62,38 @@ To get started with **Career Craft AI**, follow these steps:
 2. Install the dependencies:
 
    ```bash
+   cd client
+   npm install
+   ```
+   ```bash
+   cd server
    npm install
    ```
 
-3. Set up environment variables (if any) for API keys, database configurations, etc.
-
-4. Run the app locally:
-
-   ```bash
-   npm start
+3. Set up environment variables for API keys, database configurations, etc.
+   ```
+   cd server
+   // ceate .env file
+   
+   PORT =
+   MongoURI =
+   CLIENT_URL =
+   GEMINI_API =
+   DEEPSEEK_API = 
    ```
 
-5. Visit `http://localhost:3000` in your browser to explore the platform.
+5. Run the app locally:
+
+   ```bash
+   cd client
+   npm run dev
+   ```
+   ```bash
+   cd server
+   npm run dev
+   ```
+
+6. Visit `http://localhost:3000` in your browser to explore the platform.
 
 ## Usage
 
