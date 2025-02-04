@@ -105,5 +105,6 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 For any questions or inquiries, feel free to reach out to us at:
 
 - Email: kusumanchi.yagna@kalvium.community
-- GitHub: [Career Craft AI GitHub]([https://github.com/yourusername/career-craft-ai](https://github.com/Yagna123k/CAREER-CRAFT-AI))
-- Website: comming soon...
+- GitHub: https://github.com/Yagna123k/CAREER-CRAFT-AI
+- Figma: https://www.figma.com/design/Vtjpu6WFRcNrWBlCgzRkqx/Career-craft-AI?node-id=0-1&t=6DTPj6AIhhXD0ulr-1a
+- Website: coming soon...
