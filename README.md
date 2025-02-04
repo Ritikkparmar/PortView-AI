@@ -42,6 +42,24 @@ Welcome to **Career Craft AI**, a powerful career guidance platform designed to 
    - Prepare for interviews with a conversational AI that simulates real interview questions and provides feedback.
    - Receive tailored interview questions based on the role you're applying for and tips for improvement.
 
+## 🛠 Tech Stack & Tools
+- **Frontend:** Next.js, Tailwind CSS  
+- **Backend:** Node.js, Express.js, MongoDB  
+- **AI & NLP:** Deepseek API, Promptrepo, Gemini API, Google Cloud Speech-to-Text
+- **Authentication:** Clerk Authentication - Google, LinkedIn, Email
+- **Deployment:** Vercel (Frontend), Vercel (Backend)  
+- **Other Tools:** Framer Motion (UI Animations), Aceternity UI, Magic UI, Shadcn
+
+## 🌍 Domain  
+Career Craft AI is a **Full-Stack AI Development** project, integrating AI-driven career guidance with modern web technologies. 
+
+## 🚀 Live Deployment
+Coming soon...
+
+## 📄License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
+
 ## Installation
 
 To get started with **Career Craft AI**, follow these steps:
@@ -115,10 +133,6 @@ We welcome contributions to **Career Craft AI**! To contribute:
 5. Open a Pull Request.
 
 For any bug reports, feature requests, or suggestions, please open an issue in the repository.
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
 
 ## Contact
 
