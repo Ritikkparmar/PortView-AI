@@ -1,6 +1,6 @@
 # Career Craft AI
 
-Welcome to **Career Craft AI**, a powerful career guidance platform designed to help individuals navigate their career paths with personalized recommendations and AI-driven tools. This project aims to make career planning simpler, faster, and more efficient.
+Welcome to **Career Craft AI**, an innovative career development platform built to empower individuals with personalized guidance and AI-driven tools. Our mission is to simplify, accelerate, and enhance your career journey by providing smarter recommendations and resources tailored to your unique goals and aspirations.
 
 ## Table of Contents
 
@@ -15,7 +15,7 @@ Welcome to **Career Craft AI**, a powerful career guidance platform designed to 
 
 ## Introduction
 
-**Career Craft AI** is a comprehensive platform offering personalized career advice and resources. Whether you're a student, a professional exploring new opportunities, or someone looking to upskill, Career Craft AI provides the tools to take your career to the next level. The platform utilizes Artificial Intelligence to help you make informed decisions about your future and stay ahead in the competitive job market.
+**Career Craft AI** is a powerful, AI-driven platform that transforms how individuals approach career growth. Whether you're a student, a professional, or a creative like a photographer or designer looking to showcase your work, Career Craft AI’s all-in-one suite of tools—including an AI Career Advisor, personalized Roadmap for Success, AI-powered Interview Prep bot, and Portfolio Website Generator—empowers you to make informed decisions, create a stunning portfolio in seconds, and ace your career goals with ease.
 
 ## Features
 
@@ -42,6 +42,24 @@ Welcome to **Career Craft AI**, a powerful career guidance platform designed to 
    - Prepare for interviews with a conversational AI that simulates real interview questions and provides feedback.
    - Receive tailored interview questions based on the role you're applying for and tips for improvement.
 
+## 🛠 Tech Stack & Tools
+- **Frontend:** Next.js, Tailwind CSS  
+- **Backend:** Node.js, Express.js, MongoDB  
+- **AI & NLP:** Deepseek API, Promptrepo, Gemini API, Google Cloud Speech-to-Text
+- **Authentication:** Clerk Authentication - Google, LinkedIn, Email
+- **Deployment:** Vercel (Frontend), Vercel (Backend)  
+- **Other Tools:** Framer Motion (UI Animations), Aceternity UI, Magic UI, Shadcn
+
+## 🌍 Domain  
+Career Craft AI is a **Full-Stack AI Development** project, integrating AI-driven career guidance with modern web technologies. 
+
+## 🚀 Live Deployment
+Coming soon...
+
+## 📄License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
+
 ## Installation
 
 To get started with **Career Craft AI**, follow these steps:
@@ -62,18 +80,38 @@ To get started with **Career Craft AI**, follow these steps:
 2. Install the dependencies:
 
    ```bash
+   cd client
+   npm install
+   ```
+   ```bash
+   cd server
    npm install
    ```
 
-3. Set up environment variables (if any) for API keys, database configurations, etc.
-
-4. Run the app locally:
-
-   ```bash
-   npm start
+3. Set up environment variables for API keys, database configurations, etc.
+   ```
+   cd server
+   // ceate .env file
+   
+   PORT =
+   MongoURI =
+   CLIENT_URL =
+   GEMINI_API =
+   DEEPSEEK_API = 
    ```
 
-5. Visit `http://localhost:3000` in your browser to explore the platform.
+5. Run the app locally:
+
+   ```bash
+   cd client
+   npm run dev
+   ```
+   ```bash
+   cd server
+   npm run dev
+   ```
+
+6. Visit `http://localhost:3000` in your browser to explore the platform.
 
 ## Usage
 
@@ -95,10 +133,6 @@ We welcome contributions to **Career Craft AI**! To contribute:
 5. Open a Pull Request.
 
 For any bug reports, feature requests, or suggestions, please open an issue in the repository.
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
 
 ## Contact
 
