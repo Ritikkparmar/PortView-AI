@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --theme: #7d47ea; 
-  --dark: #0A0A0A; 
+  --theme: #7d47ea;
+  --dark: #0A0A0A;
 }
 
 *::selection {
@@ -63,6 +63,7 @@ body {
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
   }
+
   .dark {
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
@@ -91,17 +92,30 @@ body {
   }
 }
 
+@layer utilities {
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
 @layer base {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-[#0A0A0A] text-foreground;
   }
 }
 
 @layer components {
-  .card{
+  .card {
     @apply p-10 border border-[#5A5A5A]/20 rounded-3xl shadow-[0_7px_14px_#222222] max-w-xs w-full
   }
 }

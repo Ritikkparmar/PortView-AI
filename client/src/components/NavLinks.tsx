@@ -17,8 +17,8 @@ export const projects = [
     link: "portfolios",
   },
   {
-    title: "Dashboard",
-    link: "dashboard",
+    title: "AI-Roadmap",
+    link: "roadmap",
   },
   {
     title: "Interview Bot",
