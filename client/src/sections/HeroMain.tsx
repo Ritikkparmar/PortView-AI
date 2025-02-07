@@ -9,6 +9,9 @@ import { PlaceholdersAndVanishInput } from "../components/ui/placeholders-and-va
 import Image from "next/image";
 import { ContainerScroll } from "@/components/ui/container-scroll-animation";
 import linear from "@/assets/linear.webp"
+import { RoboAnimation } from "@/components/robo-animation";
+import { FloatingPaper } from "@/components/floating-paper";
+import { SparklesCore } from "@/components/sparkles2";
 
 
 export default function HeroMain() {
@@ -19,7 +22,7 @@ export default function HeroMain() {
         "I build sleek and scalable web applications as a developer...",
         "Passionate about digital marketing and brand storytelling...",
         "I create cinematic wedding films that capture emotions...",
-    ];    
+    ];
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         console.log(e.target.value);
@@ -32,7 +35,21 @@ export default function HeroMain() {
     return (
         <div className="w-full flex flex-col items-center justify-center p-4 md:p-8 relative z-20 overflow-hidden">
             <div className="mt-[12vh]"></div>
-            <Spotlight />
+            {/* <Spotlight /> */}
+            <div className="h-full w-full absolute inset-0 z-0">
+                <SparklesCore
+                    id="tsparticlesfullpage"
+                    background="transparent"
+                    minSize={0.6}
+                    maxSize={1.4}
+                    particleDensity={100}
+                    className="w-full h-full"
+                    particleColor="#FFFFFF"
+                />
+            </div>
+            <div className="absolute inset-0 overflow-hidden -z-30">
+                <FloatingPaper count={3} />
+            </div>
             <AnimatedGradientText>
                 ✨ <hr className="mx-2 h-4 w-px shrink-0 bg-gray-300" />{" "}
                 <span
@@ -50,6 +67,10 @@ export default function HeroMain() {
             <p className="relative z-20 mx-auto mt-4 max-w-lg px-4 text-center text-base font-medium text-gray-300 md:text-lg lg:text-lg">
                 Create Your Stunning Portfolio in Seconds. Just Enter Your Details and Get Started!
             </p>
+
+            <div className="absolute top-80 right-0 w-96 h-96">
+                <RoboAnimation />
+            </div>
             <div className="mt-6 mb-4">
                 <PlaceholdersAndVanishInput
                     placeholders={placeholders}

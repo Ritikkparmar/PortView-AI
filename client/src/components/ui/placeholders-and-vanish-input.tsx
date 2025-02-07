@@ -3,6 +3,32 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { MultiStepLoader as Loader } from "@/components/ui/multi-step-loader";
+import { IconSquareRoundedX } from "@tabler/icons-react";
+
+const loadingStates = [
+    {
+        text: "Analyzing your information...",
+    },
+    {
+        text: "Understanding your skills and experience...",
+    },
+    {
+        text: "Generating your personalized portfolio...",
+    },
+    {
+        text: "Optimizing design and layout...",
+    },
+    {
+        text: "Finalizing details...",
+    },
+    {
+        text: "Deploying your portfolio website...",
+    },
+    {
+        text: "Your portfolio is ready! 🚀",
+    }
+];
 
 export function PlaceholdersAndVanishInput({
     placeholders,
@@ -174,6 +200,8 @@ export function PlaceholdersAndVanishInput({
         vanishAndSubmit();
         onSubmit && onSubmit(e);
     };
+
+    const [loading, setLoading] = useState(false);
     return (
         <form
             className={cn(
@@ -207,9 +235,10 @@ export function PlaceholdersAndVanishInput({
                 )}
             />
 
+            <Loader loadingStates={loadingStates} loading={loading} duration={2000} />
+
             <button
-                disabled={!value}
-                type="submit"
+                onClick={() => setLoading(true)}
                 className="absolute right-0 top-0 bottom-0 z-50 h-full min-w-max px-4 sm:px-5 rounded-lg 
                             bg-[radial-gradient(72.97%_270%_at_50%_50%,_rgb(168,129,254)_0%,_rgb(100,25,255)_75%)]
                             shadow-[rgba(168,129,254,0.64)_0px_2px_12px_0px,_rgb(168,129,254)_0px_1px_1px_0px_inset] 
@@ -246,6 +275,14 @@ export function PlaceholdersAndVanishInput({
                     <path d="M13 6l6 6" />
                 </motion.svg>
             </button>
+            {loading && (
+                <button
+                    className="fixed top-20 right-20 text-white z-[120]"
+                    onClick={() => setLoading(false)}
+                >
+                    <IconSquareRoundedX className="h-10 w-10" />
+                </button>
+            )}
 
             <div className="absolute inset-0 flex items-center rounded-full pointer-events-none">
                 <AnimatePresence mode="wait">

@@ -10,18 +10,18 @@ export function NavLinks() {
 export const projects = [
   {
     title: "AI Advisor",
-    link: "#about",
+    link: "advisor",
   },
   {
     title: "Portfolios",
-    link: "#services",
+    link: "portfolios",
   },
   {
     title: "Dashboard",
-    link: "#portfolio",
+    link: "dashboard",
   },
   {
     title: "Interview Bot",
-    link: "#workflow",
+    link: "interviewbot",
   },
 ];

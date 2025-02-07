@@ -4,16 +4,18 @@ import Image from "next/image";
 import Uparrow from "@/assets/uil_arrow-up.svg";
 import { NavLinks } from "@/components/NavLinks";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
+import Link from 'next/link';
+
 
 export default function Navbar() {
     return (
-        <nav className="fixed top-0 backdrop-blur-sm z-30 w-full">
+        <nav className="fixed top-0 backdrop-blur-md z-30 w-full">
             <div className="flex justify-between items-center h-[10vh] px-6 md:px-32 w-full">
                 <div className="flex gap-2 items-center">
                     {/* <Image src={logo} alt="Logo" width={35} height={35} /> */}
-                    <a href="#home" className="font-medium font-chillax text-[1.2rem] md:text-[1.5rem] text-white">
+                    <Link href="/" className="font-medium font-chillax text-[1.2rem] md:text-[1.5rem] text-white">
                         CAREER CRAFT AI
-                    </a>
+                    </Link>
                 </div>
 
                 <div className="hidden md:flex font-medium">
