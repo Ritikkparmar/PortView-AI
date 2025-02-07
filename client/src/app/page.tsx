@@ -20,7 +20,7 @@ export default function Home() {
         <Tools />
       </section>
       <section id="Build with AI" aria-label="Build with AI">
-        <Gemini/>
+        <Gemini />
       </section>
       <section id="workflow" aria-label="Workflow Section">
         <Userflow />
@@ -30,6 +30,9 @@ export default function Home() {
       </section>
       <section id="FAQs" aria-label="FAQs Section">
         <FAQs />
+      </section>
+      <section id="footer" aria-label="Footer Section">
+        <Footer />
       </section>
     </>
   );

@@ -5,25 +5,22 @@ import { motion } from "framer-motion"
 import { FileText } from "lucide-react"
 
 export function FloatingPaper({ count = 5 }) {
-  const [dimensions, setDimensions] = useState({ width: 1200, height: 800 })
+  const [dimensions, setDimensions] = useState<{ width: number; height: number } | null>(null)
 
   useEffect(() => {
-    // Update dimensions only on client side
-    setDimensions({
-      width: window.innerWidth,
-      height: window.innerHeight,
-    })
+    if (typeof window !== "undefined") {
+      setDimensions({ width: window.innerWidth, height: window.innerHeight })
 
-    const handleResize = () => {
-      setDimensions({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      })
+      const handleResize = () => {
+        setDimensions({ width: window.innerWidth, height: window.innerHeight })
+      }
+
+      window.addEventListener("resize", handleResize)
+      return () => window.removeEventListener("resize", handleResize)
     }
-
-    window.addEventListener("resize", handleResize)
-    return () => window.removeEventListener("resize", handleResize)
   }, [])
+
+  if (!dimensions) return null // Avoid rendering before dimensions are set
 
   return (
     <div className="relative w-full h-full">
@@ -58,4 +55,3 @@ export function FloatingPaper({ count = 5 }) {
     </div>
   )
 }
-
