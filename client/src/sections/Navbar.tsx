@@ -5,6 +5,7 @@ import Uparrow from "@/assets/uil_arrow-up.svg";
 import { NavLinks } from "@/components/NavLinks";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import Link from 'next/link';
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 
 
 export default function Navbar() {
@@ -21,17 +22,21 @@ export default function Navbar() {
                 <div className="hidden md:flex font-medium">
                     <NavLinks />
                 </div>
-
-                <div className="hidden md:flex">
-                    <HoverBorderGradient
-                        containerClassName="rounded-full"
-                        as="button"
-                        className="bg-[#171717] flex items-center px-4 py-2 rounded-full active:bg-[#7D47EA]"
-                    >
-                        <span>Sign in</span>
-                        <Image src={Uparrow} alt="up-arrow" className="ml-2" />
-                    </HoverBorderGradient>
-                </div>
+                <SignedOut>
+                    <Link href="/sign-in" className="hidden md:flex">
+                        <HoverBorderGradient
+                            containerClassName="rounded-full"
+                            as="button"
+                            className="bg-[#171717] flex items-center px-4 py-2 rounded-full active:bg-[#7D47EA]"
+                        >
+                            <span>Sign in</span>
+                            <Image src={Uparrow} alt="up-arrow" className="ml-2" />
+                        </HoverBorderGradient>
+                    </Link>
+                </SignedOut>
+                <SignedIn>
+                    <UserButton />
+                </SignedIn>
 
                 {/* Mobile Menu Button (visible on small screens) */}
                 <div className="flex md:hidden">
@@ -39,6 +44,7 @@ export default function Navbar() {
                         <Image src={Uparrow} alt="mobile-menu" width={30} height={30} />
                     </button>
                 </div>
+
             </div>
         </nav>
     );

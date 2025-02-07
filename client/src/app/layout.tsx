@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/sections/Navbar";
 // import { Footer } from "@/sections/Footer";
 import { MyProvider } from "@/context/MyContext";
+import { ClerkProvider } from "@clerk/nextjs";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,16 +33,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <MyProvider>
+    <ClerkProvider>
 
-      <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-          <Navbar />
-          {children}
-        </body>
-      </html>
-    </MyProvider>
+      <MyProvider>
+        <html lang="en">
+          <body
+            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          >
+            <Navbar />
+            {children}
+          </body>
+        </html>
+      </MyProvider>
+    </ClerkProvider>
   );
 }
