@@ -1,13 +1,16 @@
-import { contact } from '../../portfolio';
-import './Contact.css';
+import { useContext } from "react";
+import { AppContext } from "../../context/ParentContext"; // Import AppContext
+import "./Contact.css";
 
 const Contact = () => {
-  if (!contact?.email) return null;
+  const { user } = useContext(AppContext); // Access user data from context
+
+  if (!user?.emailAddress) return null;
 
   return (
     <section className="section contact center" id="contact">
       <h2 className="section__title">Contact</h2>
-      <a href={`mailto:${contact.email}`}>
+      <a href={`mailto:${user.emailAddress}`}>
         <span className="btn btn--outline">Email me</span>
       </a>
     </section>

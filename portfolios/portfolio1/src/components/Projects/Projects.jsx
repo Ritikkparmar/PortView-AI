@@ -1,9 +1,12 @@
-import uniqid from 'uniqid';
-import { projects } from '../../portfolio';
+import { useContext } from 'react';
+import { AppContext } from '../../contexts/AppContext';
 import ProjectContainer from '../ProjectContainer/ProjectContainer';
 import './Projects.css';
 
 const Projects = () => {
+  const { user } = useContext(AppContext);
+  const projects = user?.projects || [];
+
   if (!projects.length) return null;
 
   return (
@@ -11,8 +14,8 @@ const Projects = () => {
       <h2 className="section__title">Projects</h2>
 
       <div className="projects__grid">
-        {projects.map((project) => (
-          <ProjectContainer key={uniqid()} project={project} />
+        {projects.map((_, index) => (
+          <ProjectContainer key={index} projectIndex={index} />
         ))}
       </div>
     </section>
