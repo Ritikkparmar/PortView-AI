@@ -54,7 +54,7 @@ Welcome to **Career Craft AI**, an innovative career development platform built 
 Career Craft AI is a **Full-Stack AI Development** project, integrating AI-driven career guidance with modern web technologies. 
 
 ## 🚀 Live Deployment
-Coming soon...
+Frontend Deployed Link: https://career-craft-ai.vercel.app/
 
 ## 📄License
 
@@ -141,4 +141,4 @@ For any questions or inquiries, feel free to reach out to us at:
 - Email: kusumanchi.yagna@kalvium.community
 - GitHub: https://github.com/Yagna123k/CAREER-CRAFT-AI
 - Figma: https://www.figma.com/design/Vtjpu6WFRcNrWBlCgzRkqx/Career-craft-AI?node-id=0-1&t=6DTPj6AIhhXD0ulr-1a
-- Website: coming soon...
+- Website: [Career Craft AI](https://career-craft-ai.vercel.app/)
