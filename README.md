@@ -21,7 +21,7 @@ Welcome to **Career Craft AI**, an innovative career development platform built 
 
 ## Preview
 
-[![Imgur](https://imgur.com/ueCMoBq.gif)](https://career-craft-ai.vercel.app/)
+[![Imgur](https://imgur.com/KV7fQ5S.gif)](https://career-craft-ai.vercel.app/)
 
 [Live Demo](https://drive.google.com/file/d/1wKXjPixlj3xqicU3jSDNli_BhRgGd0ta/view?usp=sharing)
 
