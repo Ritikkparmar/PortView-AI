@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-// const { PortfolioSchema } = require("./PortfolioModel");
 
 const userSchema = new mongoose.Schema(
   {

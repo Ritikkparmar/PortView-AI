@@ -2,8 +2,11 @@
 
 import React from "react";
 import { FiMessageSquare, FiSearch, FiPlus } from "react-icons/fi";
-import { AudioLines, SendHorizontal, Upload } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { useRouter } from 'next/navigation';
+
 
 type Message = {
   text: string;
@@ -15,6 +18,19 @@ export default function Interviewbot() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [jobRole, setJobRole] = useState("");
+  const [jobDescription, setJobDescription] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
+
+  const handleSubmit = () => {
+    setIsSubmitting(true);
+    setTimeout(() => {
+      console.log({ jobRole, jobDescription });
+      setIsSubmitting(false);
+    }, 1500);
+    router.push('/interviewbot/chat1');
+  };
 
   const sendMessage = async () => {
     if (!input.trim()) return;
@@ -53,50 +69,54 @@ export default function Interviewbot() {
           ))}
         </div>
 
-        <button className="mt-auto flex items-center justify-center gap-2 bg-[#7d47ea] hover:bg-violet-700 text-white py-2 rounded-md">
+        <Link href="/interviewbot" className="mt-auto flex items-center justify-center gap-2 bg-[#7d47ea] hover:bg-violet-700 text-white py-2 rounded-lg">
           <FiPlus /> New Chat
-        </button>
+        </Link>
       </div>
 
-      <div className="flex flex-col justify-end items-center h-full w-full max-w-6xl text-white p-4 pb-2">
-        <div className="w-full max-w-3xl flex flex-col space-y-2 overflow-y-auto h-[65vh] p-2 no-scrollbar">
-          {messages.map((msg, index) => (
-            <div key={index} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-              <div className={`p-3 rounded-lg max-w-xs ${msg.sender === 'user' ? 'bg-[#7d47ea]/70' : 'bg-gray-700'}`}>
-                {msg.text}
-              </div>
-            </div>
-          ))}
-          <div ref={messagesEndRef} />
-        </div>
+      <div className="flex flex-col justify-center items-center h-[90vh] w-full max-w-6xl text-white p-4 pb-2">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+          className="bg-[#121212] p-6 rounded-lg shadow-lg w-96"
+        >
+          <h2 className="text-xl font-bold mb-4 text-center">Enter Job Details</h2>
 
-        <div className="w-full max-w-3xl flex items-center space-x-2 mt-4">
-          <div className='bg-[#171717] rounded-lg px-4 pt-4 pb-2 w-full max-w-3xl'>
-            <div className='flex items-center justify-between space-x-2 mb-2'>
-              <input
-                type="text"
-                className="flex-1 bg-[#171717] text-white outline-none w-full max-w-3xl px-2"
-                placeholder="Chat with AI Career Advisor..."
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
-              />
-              <button onClick={sendMessage} className="bg-[#7d47ea] p-2 font-semibold min-w-max rounded-full
-                            hover:scale-105
-                            active:bg-[radial-gradient(72.97%_270%_at_50%_50%,_rgb(150,100,250)_0%,_rgb(90,20,220)_85%)]
-                            active:shadow-[rgba(150,100,250,0.75)_0px_2px_10px_0px,_rgb(150,100,250)_0px_1px_1px_0px_inset] 
-                            active:scale-95">
-                <SendHorizontal />
-              </button>
-            </div>
+          <label className="block mb-2">Job Role:</label>
+          <motion.input
+            whileFocus={{ scale: 1.02 }}
+            type="text"
+            value={jobRole}
+            onChange={(e) => setJobRole(e.target.value)}
+            className="w-full p-2 rounded bg-[#1e1e1e] text-white outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-200"
+            placeholder="e.g., Data Scientist, UI/UX Designer..."
+          />
 
-            <div className='flex items-center justify-between w-full'>
-              <button className='p-2 rounded-full border hover:scale-105 hover:bg-gray-700'><Upload /></button>
-              <button className='p-2 rounded-full hover:scale-110'><AudioLines /></button>
-            </div>
-          </div>
-        </div>
-        <p className='text-sm font-light mt-2'>AI suggestions may not be perfect. Please verify before use.</p>
+          <label className="block mt-4 mb-2">Job Description:</label>
+          <motion.textarea
+            whileFocus={{ scale: 1.02 }}
+            value={jobDescription}
+            onChange={(e) => setJobDescription(e.target.value)}
+            className="w-full p-2 rounded bg-[#1e1e1e] text-white outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-200"
+            placeholder="Describe the role, responsibilities, and expectations in detail..."
+            rows={4}
+          />
+
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="w-full mt-4 bg-[#7d47ea] hover:bg-violet-700 p-2 rounded text-white font-semibold flex justify-center items-center gap-2 transition-all duration-200"
+            onClick={handleSubmit}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <span className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></span>
+            ) : (
+              "Submit"
+            )}
+          </motion.button>
+        </motion.div>
       </div>
     </div>
   );
