@@ -18,7 +18,7 @@ export default function Chatbot() {
 
   const sendMessage = async () => {
     if (!input.trim()) return;
-
+  
     const userMessage: Message = { text: input, sender: 'user' };
     setMessages((prev) => [...prev, userMessage]);
     setInput('');
@@ -42,6 +42,7 @@ export default function Chatbot() {
       setLoading(false);
     }
   };
+  
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -58,8 +59,8 @@ export default function Chatbot() {
         }
         {messages.map((msg, index) => (
           <div key={index} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div className={`p-3 rounded-lg max-w-xs ${msg.sender === 'user' ? 'bg-[#7d47ea]/70' : 'bg-gray-700'}`}>
-              {msg.text}
+            <div className={`p-3 rounded-lg max-w-md ${msg.sender === 'user' ? 'bg-[#7d47ea]/70' : 'bg-gray-700'}`}>
+              <ReactMarkdown>{msg.text}</ReactMarkdown>
             </div>
           </div>
         ))}
@@ -74,10 +75,10 @@ export default function Chatbot() {
         <div ref={messagesEndRef} />
       </div>
 
-      <div className="w-full max-w-3xl flex items-center space-x-2 mt-4">
-        <div className='bg-[#171717] rounded-lg px-4 pt-4 pb-2 w-full max-w-3xl'>
-          <div className='flex items-center justify-between space-x-2 mb-2'>
-            <input
+       <div className="w-full max-w-3xl flex items-center space-x-2 mt-4">
+         <div className='bg-[#171717] rounded-lg px-4 pt-4 pb-2 w-full max-w-3xl'>
+           <div className='flex items-center justify-between space-x-2 mb-2'>
+             <input
               type="text"
               className="flex-1 bg-[#171717] text-white outline-none w-full max-w-3xl px-2"
               placeholder="Chat with AI Career Advisor..."
@@ -106,3 +107,4 @@ export default function Chatbot() {
     </div>
   );
 }
+

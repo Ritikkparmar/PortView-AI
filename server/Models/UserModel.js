@@ -10,10 +10,7 @@ const userSchema = new mongoose.Schema(
         picture: String,
         email: { type: String, required: true },
         portfolios: Array,
-        views: Number,
-        likes: Number,
-        liked: Array,
-        profile: Object
+        profile: PortfolioSchema
     }
 )
 
