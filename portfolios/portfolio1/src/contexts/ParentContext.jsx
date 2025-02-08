@@ -5,25 +5,28 @@ export const AppContext = createContext()
 const ParentContext = ({ children }) => {
     const [user, setUser] = useState(
         {
-            fullName: "John Smith",
-            phoneNumber: "+91",
-            emailAddress: "johnsmith@mail.com",
-            bio: "Adipisicing sit fugit ullam unde aliquid sequi Facilis soluta facilis perspiciatis corporis nulla aspernatur. Autem eligendi rerum delectus modi quisquam? Illo ut quasi nemo ipsa cumque perspiciatis! Maiores minima consectetur.",
+            fullName: "",
+            phoneNumber: "",
+            role: "",
+            emailAddress: "",
+            bio: "",
+            resume: "",
+            skills: [],
             socialLinks: {
                 website: "",
                 facebook: "",
-                twitter:"",
-                instagram:"",
-                linkedin:"",
-                github:"",
-                behance:"",
-                dribbble:"",
+                twitter: "",
+                instagram: "",
+                linkedin: "",
+                github: "",
+                behance: "",
+                dribbble: "",
             },
             education: {
                 degree: "",
                 fieldOfStudy: "",
                 institution: "",
-                graduationYear: "",
+                graduationYear: null,
             },
             workExperience: [
                 {
@@ -37,17 +40,36 @@ const ParentContext = ({ children }) => {
                 {
                     title: "",
                     description: "",
-                    year: "",
+                    year: null,
                 },
             ],
             projects: [
                 {
-                    title: "",
+                    name: "",
                     description: "",
-                    projectLink: "",
+                    imgLink: "",
+                    stack: [],
+                    SourceCode: "",
+                    livePreview: "",
+                },
+                {
+                    name: "",
+                    description: "",
+                    imgLink: "",
+                    stack: [],
+                    SourceCode: "",
+                    livePreview: "",
+                },
+                {
+                    name: "",
+                    description: "",
+                    imgLink: "",
+                    stack: [],
+                    SourceCode: "",
+                    livePreview: "",
                 },
             ],
-        }
+        },
     )
 
     return <AppContext.Provider value={{ user, setUser }}>

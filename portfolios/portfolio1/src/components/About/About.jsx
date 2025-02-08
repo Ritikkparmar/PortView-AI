@@ -1,22 +1,24 @@
+import { useContext } from "react";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
-
-import { about } from '../../portfolio';
-import './About.css';
+import { AppContext } from "../../context/ParentContext"; // Import AppContext
+import "./About.css";
 
 const About = () => {
-  const { name, role, description, resume, social } = about;
+  const { user } = useContext(AppContext); // Access user data from context
+
+  const { fullName, role, bio, resume, socialLinks } = user;
 
   return (
     <div className="about center">
-      {name && (
+      {fullName && (
         <h1>
-          Hi, I am <span className="about__name">{name}.</span>
+          Hi, I am <span className="about__name">{fullName}.</span>
         </h1>
       )}
 
       {role && <h2 className="about__role">A {role}.</h2>}
-      <p className="about__desc">{description}</p>
+      <p className="about__desc">{bio}</p>
 
       <div className="about__contact center">
         {resume && (
@@ -25,9 +27,9 @@ const About = () => {
           </a>
         )}
 
-        {social?.github && (
+        {socialLinks?.github && (
           <a
-            href={social.github}
+            href={socialLinks.github}
             aria-label="github"
             className="link link--icon"
             target="_blank"
@@ -37,9 +39,9 @@ const About = () => {
           </a>
         )}
 
-        {social?.linkedin && (
+        {socialLinks?.linkedin && (
           <a
-            href={social.linkedin}
+            href={socialLinks.linkedin}
             aria-label="linkedin"
             className="link link--icon"
             target="_blank"
