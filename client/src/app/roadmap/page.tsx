@@ -1,6 +1,5 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 
 const roles = [
@@ -13,13 +12,31 @@ const roles = [
 
 const roleLinks: Record<string, string> = {
   'Frontend': 'https://roadmap.sh/pdfs/roadmaps/frontend.pdf',
-  'Backend': 'https://docs.google.com/backend',
-  'DevOps': 'https://docs.google.com/devops',
-  // Add links for all roles...
+  'Backend':'https://roadmap.sh/pdfs/roadmaps/backend.pdf',
+  'DevOps': 'https://roadmap.sh/pdfs/roadmaps/devops.pdf' ,
+  'Full Stack': 'https://roadmap.sh/pdfs/roadmaps/full-stack.pdf' ,
+  'AI Engineer' : 'https://roadmap.sh/pdfs/roadmaps/ai-engineer.pdf' ,
+  'Data Analyst' : 'https://roadmap.sh/pdfs/roadmaps/data-analyst.pdf' ,
+  'AI and Data Scientist' : 'https://roadmap.sh/pdfs/roadmaps/ai-data-scientist.pdf',
+  'Android': 'https://roadmap.sh/pdfs/roadmaps/android.pdf' ,
+  'iOS' : 'https://roadmap.sh/pdfs/roadmaps/ios.pdf' , 
+  'PostgreSQL': 'https://roadmap.sh/pdfs/roadmaps/postgresql-dba.pdf' ,
+  'Blockchain' : 'https://roadmap.sh/pdfs/roadmaps/blockchain.pdf' ,
+  'QA' : 'https://roadmap.sh/pdfs/roadmaps/qa.pdf' ,
+  'Software Architect' : 'https://roadmap.sh/pdfs/roadmaps/software-architect.pdf' ,
+  'Cyber Security' : 'https://roadmap.sh/pdfs/roadmaps/cyber-security.pdf' ,
+  'UX Design': 'https://roadmap.sh/pdfs/roadmaps/ux-design.pdf' ,
+  'Game Developer' : 'https://roadmap.sh/pdfs/roadmaps/game-developer.pdf' ,
+  'Technical Writer' : 'https://roadmap.sh/pdfs/roadmaps/technical-writer.pdf' ,
+  'MLOps' : 'https://roadmap.sh/pdfs/roadmaps/mlops.pdf' ,
+  'Product Manager' : 'https://roadmap.sh/pdfs/roadmaps/product-manager.pdf' ,
+  'Engineering Manager' : 'https://roadmap.sh/pdfs/roadmaps/engineering-manager.pdf' ,
+  'Developer Relations' : 'https://roadmap.sh/pdfs/roadmaps/devrel.pdf' ,
+  'DSA' : 'https://roadmap.sh/pdfs/roadmaps/datastructures-and-algorithms.pdf' ,
+  'Prompt Engineering' : 'https://roadmap.sh/pdfs/roadmaps/prompt-engineering.pdf' ,
 };
 
 export default function Hero() {
-  const router = useRouter();
 
   const handleRoleClick = (role: string) => {
     const url = roleLinks[role] || 'https://docs.google.com/default';
@@ -31,7 +48,7 @@ export default function Hero() {
       <h1 className="text-4xl font-bold mb-6 text-center">Role-based Roadmaps</h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full max-w-5xl">
-        {roles.map((role, index) => (
+        {roles.map((role) => (
           <motion.button
             key={role}
             whileHover={{ scale: 1.05 }}
