@@ -4,7 +4,7 @@ export async function POST(req: Request) {
   const { message } = await req.json();
 
   const apiKey = process.env.MISTRAL_API_KEY;
-  const apiUrl:any = process.env.MISTRAL_API_URL;
+  const apiUrl = 'https://api.mistral.ai/v1/chat/completions';
 
   const response = await fetch(apiUrl, {
     method: 'POST',
