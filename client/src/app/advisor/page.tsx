@@ -31,7 +31,7 @@ export default function Chatbot() {
 
   return (
     <div className="flex flex-col justify-end items-center h-screen bg-black text-white p-4">
-      <div className="w-full max-w-3xl flex flex-col space-y-2 overflow-y-auto h-[75vh] p-2 no-scrollbar">
+      <div className="w-full max-w-3xl flex flex-col space-y-2 overflow-y-auto h-[65vh] p-2 no-scrollbar">
         {messages.map((msg, index) => (
           <div key={index} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
             <div className={`p-3 rounded-lg max-w-xs ${msg.sender === 'user' ? 'bg-[#7d47ea]/70' : 'bg-gray-700'}`}>
