@@ -6,6 +6,7 @@ import { NavLinks } from "@/components/NavLinks";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import Link from 'next/link';
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import logo from "@/assets/Logo.svg"
 
 
 export default function Navbar() {
@@ -13,7 +14,7 @@ export default function Navbar() {
         <nav className="fixed top-0 backdrop-blur-md z-30 w-full">
             <div className="flex justify-between items-center h-[10vh] px-6 md:px-32 w-full">
                 <div className="flex gap-2 items-center">
-                    {/* <Image src={logo} alt="Logo" width={35} height={35} /> */}
+                    <Image src={logo} alt="Logo" width={35} height={35} />
                     <Link href="/" className="font-medium font-chillax text-[1.2rem] md:text-[1.5rem] text-white">
                         CAREER CRAFT AI
                     </Link>
