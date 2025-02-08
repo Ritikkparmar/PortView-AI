@@ -3,7 +3,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const connectMongoDB = require("./DataBase/ConnectMongoDB");
 const userRoutes = require("./routes/UserRoutes");
-const PortfolioRoutes = require("./routes/PortfolioRoutes");
+// const PortfolioRoutes = require("./routes/PortfolioRoutes");
 
 dotenv.config();
 const app = express();
@@ -23,7 +23,6 @@ app.use(express.json());
 
 // Routes
 app.use("/api/users", userRoutes);
-app.use("/portfolio", PortfolioRoutes);
 
 const PORT = process.env.PORT || 5005;
 
