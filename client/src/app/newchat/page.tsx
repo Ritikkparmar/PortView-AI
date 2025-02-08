@@ -4,8 +4,6 @@ import React from "react";
 import { FiMessageSquare, FiSearch, FiPlus } from "react-icons/fi";
 import { useState, useRef, useEffect } from 'react';
 import { motion } from "framer-motion";
-import Link from "next/link";
-import { useRouter } from 'next/navigation';
 
 
 type Message = {
@@ -21,7 +19,6 @@ export default function Interviewbot() {
   const [jobRole, setJobRole] = useState("");
   const [jobDescription, setJobDescription] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const router = useRouter();
 
   const handleSubmit = () => {
     setIsSubmitting(true);
@@ -29,7 +26,6 @@ export default function Interviewbot() {
       console.log({ jobRole, jobDescription });
       setIsSubmitting(false);
     }, 1500);
-    router.push('/interviewbot/chat1');
   };
 
   const sendMessage = async () => {
@@ -69,9 +65,9 @@ export default function Interviewbot() {
           ))}
         </div>
 
-        <Link href="/interviewbot" className="mt-auto flex items-center justify-center gap-2 bg-[#7d47ea] hover:bg-violet-700 text-white py-2 rounded-lg">
+        <button className="mt-auto flex items-center justify-center gap-2 bg-[#7d47ea] hover:bg-violet-700 text-white py-2 rounded-lg">
           <FiPlus /> New Chat
-        </Link>
+        </button>
       </div>
 
       <div className="flex flex-col justify-center items-center h-[90vh] w-full max-w-6xl text-white p-4 pb-2">

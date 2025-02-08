@@ -5,7 +5,7 @@ import tool1 from "@/assets/Tool1.png"
 import tool2 from "@/assets/Tool2.png"
 import tool3 from "@/assets/Tool3.png"
 import tool4 from "@/assets/Tool4.png"
-import { Bot, Brain, BrainCircuit, Megaphone, Route } from "lucide-react";
+import { Bot, BrainCircuit, Megaphone, Route } from "lucide-react";
 
 export function ToolsBox() {
     return (

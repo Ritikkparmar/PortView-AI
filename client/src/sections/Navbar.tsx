@@ -5,6 +5,8 @@ import Uparrow from "@/assets/uil_arrow-up.svg";
 import { NavLinks } from "@/components/NavLinks";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import Link from 'next/link';
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import logo from "@/assets/Logo.svg"
 
 
 export default function Navbar() {
@@ -12,7 +14,7 @@ export default function Navbar() {
         <nav className="fixed top-0 backdrop-blur-md z-30 w-full">
             <div className="flex justify-between items-center h-[10vh] px-6 md:px-32 w-full">
                 <div className="flex gap-2 items-center">
-                    {/* <Image src={logo} alt="Logo" width={35} height={35} /> */}
+                    <Image src={logo} alt="Logo" width={35} height={35} />
                     <Link href="/" className="font-medium font-chillax text-[1.2rem] md:text-[1.5rem] text-white">
                         CAREER CRAFT AI
                     </Link>
@@ -21,17 +23,21 @@ export default function Navbar() {
                 <div className="hidden md:flex font-medium">
                     <NavLinks />
                 </div>
-
-                <div className="hidden md:flex">
-                    <HoverBorderGradient
-                        containerClassName="rounded-full"
-                        as="button"
-                        className="bg-[#171717] flex items-center px-4 py-2 rounded-full active:bg-[#7D47EA]"
-                    >
-                        <span>Sign in</span>
-                        <Image src={Uparrow} alt="up-arrow" className="ml-2" />
-                    </HoverBorderGradient>
-                </div>
+                <SignedOut>
+                    <Link href="/sign-in" className="hidden md:flex">
+                        <HoverBorderGradient
+                            containerClassName="rounded-full"
+                            as="button"
+                            className="bg-[#171717] flex items-center px-4 py-2 rounded-full active:bg-[#7D47EA]"
+                        >
+                            <span>Sign in</span>
+                            <Image src={Uparrow} alt="up-arrow" className="ml-2" />
+                        </HoverBorderGradient>
+                    </Link>
+                </SignedOut>
+                <SignedIn>
+                    <UserButton />
+                </SignedIn>
 
                 {/* Mobile Menu Button (visible on small screens) */}
                 <div className="flex md:hidden">
@@ -39,6 +45,7 @@ export default function Navbar() {
                         <Image src={Uparrow} alt="mobile-menu" width={30} height={30} />
                     </button>
                 </div>
+
             </div>
         </nav>
     );
