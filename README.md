@@ -5,47 +5,65 @@ Welcome to **Career Craft AI**, an innovative career development platform built 
 ## Table of Contents
 
 1. [Introduction](#introduction)
-2. [Features](#features)
-3. [Tools](#tools)
-4. [Installation](#installation)
-5. [Usage](#usage)
-6. [Contributing](#contributing)
-7. [License](#license)
-8. [Contact](#contact)
+2. [Preview](#Preview)
+3. [Problem Statements & Solutions](#-problem-statements--solutions)
+4. [Features](#-features)
+5. [Tech Stack & Tools](#-tech-stack--tools)
+6. [Installation](#installation)
+7. [Usage](#usage)
+8. [Contributing](#contributing)
+9. [License](#license)
+10. [Contact](#contact)
 
 ## Introduction
 
 **Career Craft AI** is a powerful, AI-driven platform that transforms how individuals approach career growth. Whether you're a student, a professional, or a creative like a photographer or designer looking to showcase your work, Career Craft AI’s all-in-one suite of tools—including an AI Career Advisor, personalized Roadmap for Success, AI-powered Interview Prep bot, and Portfolio Website Generator—empowers you to make informed decisions, create a stunning portfolio in seconds, and ace your career goals with ease.
 
-## Features
+## Preview
 
-- Personalized career path recommendations based on user skills and interests.
-- Step-by-step guidance to build the necessary skills for desired roles.
-- Creation of professional portfolios in minutes.
-- AI-powered interview prep to practice for your next big opportunity.
+[![Imgur](https://imgur.com/KV7fQ5S.gif)](https://career-craft-ai.vercel.app/)
 
-## Tools
+[Live Demo](https://drive.google.com/file/d/1wKXjPixlj3xqicU3jSDNli_BhRgGd0ta/view?usp=sharing)
 
-### 1. **AI Career Advisor**
-   - Receive personalized career recommendations based on your skills, interests, and current market trends.
-   - Tailored suggestions for the best-fit roles and industries.
 
-### 2. **Roadmap for Success**
-   - Get a customized, step-by-step learning and skill development plan to guide you towards your career goals.
-   - Helps you acquire the skills and certifications needed to succeed in your chosen field.
+## 🚀 Problem Statements & Solutions
 
-### 3. **Portfolio Website Generator**
-   - Instantly create a professional, customizable portfolio website to showcase your work, projects, and achievements.
-   - Perfect for building an online presence for job applications or networking.
+### 1. Lack of Career Guidance
 
-### 4. **AI Interview Prep Chatbot**
-   - Prepare for interviews with a conversational AI that simulates real interview questions and provides feedback.
-   - Receive tailored interview questions based on the role you're applying for and tips for improvement.
+**Problem:** When starting a career, we often seek guidance from experienced professionals who can offer insights and recommendations. However, finding a knowledgeable mentor is not always easy.
+
+**Solution:** Career Craft AI offers an **AI Career Advisor** that provides personalized career recommendations based on your skills, interests, and market trends, helping you make informed decisions about your career path.
+
+### 2. Difficulty in Building a Portfolio
+
+**Problem:** A professional portfolio acts as proof of work and increases the chances of career opportunities. However, creating a well-structured portfolio from scratch can be time-consuming and challenging.
+
+**Solution:** Our **AI-Powered Portfolio Generator** allows users to instantly generate a professional portfolio website with just a single prompt, making it easier than ever to showcase work and achievements.
+
+### 3. No Clear Roadmap for Skill Development
+
+**Problem:** When entering a new field or learning a new skill, we often struggle to find a well-structured, step-by-step roadmap that outlines what to learn and how to progress.
+
+**Solution:** Career Craft AI provides a **Roadmap for Success**, a customized learning and skill development plan that guides users through acquiring the necessary skills and certifications for their desired career.
+
+### 4. Ineffective Interview Preparation
+
+**Problem:** Preparing for an interview requires practice, role-specific questions, and constructive feedback, which are not always readily available.
+
+**Solution:** Our **AI Interview Prep Chatbot** simulates real interview scenarios, asks tailored questions based on the role, and provides instant feedback, helping users refine their responses and boost confidence.
+
+## 🔥 Features
+
+- **AI Career Advisor** – Get personalized career recommendations tailored to your skills and interests.
+- **Roadmap for Success** – Follow a structured plan to develop the right skills for your chosen career.
+- **AI-Powered Portfolio Generator** – Instantly create a professional portfolio website.
+- **AI Interview Prep Chatbot** – Practice for interviews with real-time AI feedback and role-specific questions.
+
 
 ## 🛠 Tech Stack & Tools
 - **Frontend:** Next.js, Tailwind CSS  
 - **Backend:** Node.js, Express.js, MongoDB  
-- **AI & NLP:** Deepseek API, Promptrepo, Gemini API, Google Cloud Speech-to-Text
+- **AI & NLP:** Mistral AI, Promptrepo, Gemini AI, Google Cloud Speech-to-Text
 - **Authentication:** Clerk Authentication - Google, LinkedIn, Email
 - **Deployment:** Vercel (Frontend), Vercel (Backend)  
 - **Other Tools:** Framer Motion (UI Animations), Aceternity UI, Magic UI, Shadcn
