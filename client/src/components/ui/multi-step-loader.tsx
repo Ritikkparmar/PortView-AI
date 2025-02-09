@@ -1,7 +1,9 @@
 "use client";
+import { useMyContext } from "@/context/MyContext";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState, useEffect } from "react";
+
 
 const CheckIcon = ({ className }: { className?: string }) => {
   return (
@@ -102,6 +104,8 @@ export const MultiStepLoader = ({
   loop?: boolean;
 }) => {
   const [currentState, setCurrentState] = useState(0);
+  const { userProfile } = useMyContext();
+
 
   useEffect(() => {
     if (!loading) {
@@ -112,7 +116,8 @@ export const MultiStepLoader = ({
       setCurrentState((prevState) => {
         if (prevState === loadingStates.length - 1) {
           setCurrentState(0)
-          window.open("https://myai-portfolio.vercel.app", "_blank");
+          const url = `https://myai-portfolio.vercel.app/?id=${userProfile.UserId}`
+          window.open(url, "_blank");
           return prevState;
         }
 

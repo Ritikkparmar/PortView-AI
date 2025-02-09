@@ -47,7 +47,7 @@ export function ToolsBox() {
                         <div className="flex items-center justify-center rounded-full w-16 h-16 bg-[#FFFFFF]/40 border-white/40 border mb-4">
                             <Route width={"36px"} height={"36px"} />
                         </div>
-                        <h1 className="text-2xl font-semibold mb-8">Create Road Map</h1>
+                        <h1 className="text-2xl font-semibold mb-8">Career Road Maps</h1>
                         <p>receive a tailored roadmap with step-by-step guidance to achieve your professional goals.</p>
                     </div>
                     <div className="flex items-center justify-center">

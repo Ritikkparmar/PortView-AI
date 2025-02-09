@@ -4,19 +4,23 @@ import React from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import portfolio1 from "@/assets/Portfolio1.png"
+import { useMyContext } from "@/context/MyContext";
 
-const templates = [
-  {
-    id: 1,
-    name: "Developer Portfolio",
-    thumbnail: portfolio1,
-    previewLink: "https://myai-portfolio.vercel.app",
-    customizeLink: "https://your-customize-link-1.com",
-  },
 
-];
 
 export default function Portfolios() {
+  const { userProfile } = useMyContext();
+  const templates = [
+    {
+      id: 1,
+      name: "Developer Portfolio",
+      thumbnail: portfolio1,
+      previewLink: `https://myai-portfolio.vercel.app/?id=${userProfile.UserId}`,
+      customizeLink: "",
+    },
+
+  ];
+
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center text-white px-6">
       <h1 className="text-4xl font-bold mb-8 text-center">Portfolio Templates</h1>
