@@ -5,6 +5,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { MultiStepLoader as Loader } from "@/components/ui/multi-step-loader";
 import { IconSquareRoundedX } from "@tabler/icons-react";
+import { useMyContext } from "@/context/MyContext";
+import { useUser } from "@clerk/nextjs";
 
 const loadingStates = [
   {
@@ -195,8 +197,83 @@ export function PlaceholdersAndVanishInput({
     }
   };
 
+  async function updateProfile(data:any) {
+    try {
+      const response = await fetch('https://career-craft-ai-server.vercel.app/user/updateprofile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: user?.fullName || "",
+          email: user?.primaryEmailAddress?.emailAddress || "",
+          profile: {
+            fullName: data.fullName,
+            phoneNumber: data.phoneNumber,
+            role: data.role,
+            emailAddress: data.emailAddress,
+            bio: data.bio,
+            resume: data.resume,
+            skills: data.skills || [],
+            socialLinks: {
+              website: data.socialLinks.website,
+              facebook: data.socialLinks.facebook,
+              twitter: data.socialLinks.twitter,
+              instagram: data.socialLinks.instagram,
+              linkedin: data.socialLinks.linkedin,
+              github: data.socialLinks.github,
+              behance: data.socialLinks.behance,
+              dribbble: data.socialLinks.dribbble,
+            },
+            education: {
+              degree: data.education.degree || "",
+              fieldOfStudy: data.education.fieldOfStudy || "",
+              institution: data.education.institution || "",
+              graduationYear: data.education.graduationYear || null,
+            },
+            workExperience: data.workExperience || [],
+            achievements: data.achievements || [],
+            projects: data.projects.map((project: any) => ({
+              name: project.name,
+              description: project.description,
+              imgLink: project.imgLink,
+              stack: project.stack || [],
+              SourceCode: project.SourceCode,
+              livePreview: project.livePreview,
+            })),
+          },
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to update profile: ${response.status} ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      console.log('Profile updated successfully:', result);
+      return result;
+    } catch (error:any) {
+      console.error('Error updating profile:', error.message);
+      return null;
+    }
+  }
+
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!value.trim()) {
+      alert("Input cannot be empty!");
+      setLoading(false);
+      return;
+    }
+    if (!isSignedIn) {
+      alert("You must be logged in to submit!");
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
 
     try {
       console.log("Start request");
@@ -211,7 +288,10 @@ export function PlaceholdersAndVanishInput({
         throw new Error(`HTTP error! Status: ${response.status}`);
 
       const data = await response.json();
-      console.log("Response received:", data);
+      console.log("Promptrepo Response:", data);
+
+      updateProfile(data[0]?.Portfolio_data.data);
+
     } catch (error) {
       console.error("Error fetching response:", error);
     }
@@ -221,6 +301,8 @@ export function PlaceholdersAndVanishInput({
   };
 
   const [loading, setLoading] = useState(false);
+  const { isSignedIn, user } = useUser();
+
   return (
     <form
       className={cn(
