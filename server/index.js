@@ -2,27 +2,24 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const connectMongoDB = require("./DataBase/ConnectMongoDB");
-const userRoutes = require("./routes/UserRoutes");
-// const PortfolioRoutes = require("./routes/PortfolioRoutes");
 
 dotenv.config();
 const app = express();
 
 // CORS Configuration
-app.use(
-    cors({
-        origin: ["http://localhost:3000", process.env.CLIENT_URL], // Allows local and deployed frontend
-        methods: "GET, POST, PUT, DELETE",
-        allowedHeaders: "Content-Type, Authorization",
-        credentials: true,
-    })
-);
+app.use(cors({
+    origin: ['https://myai-portfolio.vercel.app','http://localhost:3000', 'https://career-craft-ai.vercel.app', 'http://localhost:5173'],
+    methods: 'GET, POST, PUT, DELETE',
+    allowedHeaders: 'Content-Type',
+    credentials: true,
+}));
 
 // Middleware
 app.use(express.json());
 
 // Routes
-app.use("/api/users", userRoutes);
+const UserRouter = require("./routes/User")
+app.use('/user', UserRouter);
 
 const PORT = process.env.PORT || 5005;
 

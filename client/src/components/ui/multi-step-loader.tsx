@@ -112,7 +112,7 @@ export const MultiStepLoader = ({
       setCurrentState((prevState) => {
         if (prevState === loadingStates.length - 1) {
           setCurrentState(0)
-          window.open("https://github.com/Yagna123k/CAREER-CRAFT-AI", "_blank");
+          window.open("https://myai-portfolio.vercel.app", "_blank");
           return prevState;
         }
 

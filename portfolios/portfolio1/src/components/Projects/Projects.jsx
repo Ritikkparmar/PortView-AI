@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { AppContext } from '../../contexts/AppContext';
+import { AppContext } from '../../context/ParentContext';
 import ProjectContainer from '../ProjectContainer/ProjectContainer';
 import './Projects.css';
 
