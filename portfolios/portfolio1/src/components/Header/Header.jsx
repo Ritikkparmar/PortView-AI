@@ -9,10 +9,10 @@ const Header = () => {
       <h3>
         {homepage ? (
           <a href={homepage} className="link">
-            Portfolio
+            Portfolio.
           </a>
         ) : (
-          "Portfolio"
+          "Portfolio."
         )}
       </h3>
       <Navbar />

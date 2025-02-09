@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { AppContext } from '../../contexts/AppContext';
+import { AppContext } from '../../context/ParentContext';
 import uniqid from 'uniqid';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LaunchIcon from '@mui/icons-material/Launch';
