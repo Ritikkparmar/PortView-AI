@@ -20,7 +20,7 @@ const ProjectContainer = ({ projectIndex }) => {
         <img src={project.imgLink} alt={project.name} className="project__image" />
       )}
 
-      {project.stack.length > 0 && (
+      {project?.stack?.length > 0 && (
         <ul className="project__stack">
           {project.stack.map((item) => (
             <li key={uniqid()} className="project__stack-item">
