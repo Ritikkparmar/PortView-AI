@@ -117,11 +117,20 @@ To get started with **Career Craft AI**, follow these steps:
    cd server
    // ceate .env file
    
-   PORT =
+   PORT = 
    MongoURI =
-   CLIENT_URL =
-   GEMINI_API =
-   DEEPSEEK_API = 
+   CLIENT_URL=
+   ```
+   ```
+   cd client
+   // ceate .env.local file
+   
+   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
+   CLERK_SECRET_KEY=
+   NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+   MISTRAL_API_KEY=
+   NEXT_PUBLIC_GEMINI_API_KEY=
+   NEXT_PUBLIC_BACKEND_URL=
    ```
 
 5. Run the app locally:
