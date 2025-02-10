@@ -8,12 +8,13 @@ Welcome to **Career Craft AI**, an innovative career development platform built 
 2. [Preview](#Preview)
 3. [Problem Statements & Solutions](#-problem-statements--solutions)
 4. [Features](#-features)
-5. [Tech Stack & Tools](#-tech-stack--tools)
-6. [Installation](#installation)
-7. [Usage](#usage)
-8. [Contributing](#contributing)
-9. [License](#license)
-10. [Contact](#contact)
+5. [Promptrepo](#Promptrepo)
+6. [Tech Stack & Tools](#-tech-stack--tools)
+7. [Installation](#installation)
+8. [Usage](#usage)
+9. [Contributing](#contributing)
+10. [License](#license)
+11. [Contact](#contact)
 
 ## Introduction
 
@@ -59,11 +60,16 @@ Welcome to **Career Craft AI**, an innovative career development platform built 
 - **AI-Powered Portfolio Generator** – Instantly create a professional portfolio website.
 - **AI Interview Prep Chatbot** – Practice for interviews with real-time AI feedback and role-specific questions.
 
+## Promptrepo
+
+We have used **Promptrepo** to extract the user's details for generating portfolio
+
+[Promptrepo data set](https://docs.google.com/spreadsheets/d/1WNmaCnpeqgD8aNMgVALb3MiVv2MbQvJFx7twd4-uy-A/edit?usp=sharing)
 
 ## 🛠 Tech Stack & Tools
 - **Frontend:** Next.js, Tailwind CSS  
 - **Backend:** Node.js, Express.js, MongoDB  
-- **AI & NLP:** Mistral AI, Promptrepo, Gemini AI, Google Cloud Speech-to-Text
+- **AI & NLP:**  Promptrepo, Mistral AI, Gemini AI, Google Cloud Speech-to-Text
 - **Authentication:** Clerk Authentication - Google, LinkedIn, Email
 - **Deployment:** Vercel (Frontend), Vercel (Backend)  
 - **Other Tools:** Framer Motion (UI Animations), Aceternity UI, Magic UI, Shadcn
