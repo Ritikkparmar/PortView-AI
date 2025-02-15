@@ -38,7 +38,7 @@ const App = () => {
         if (!response.ok) throw new Error('Failed to fetch user data');
 
         const data = await response.json();
-        console.log(data.profile)
+        console.log("Profile data: ", data)
         setUser(data.profile);
       } catch (error) {
         if (error.name !== 'AbortError') {

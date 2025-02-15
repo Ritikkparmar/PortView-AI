@@ -208,43 +208,10 @@ export function PlaceholdersAndVanishInput({
           name: user?.fullName || "",
           email: user?.primaryEmailAddress?.emailAddress || "",
           profile:data
-          // profile: {
-          //   fullName: data.fullName,
-          //   phoneNumber: data.phoneNumber,
-          //   role: data.role,
-          //   emailAddress: data.emailAddress,
-          //   bio: data.bio,
-          //   resume: data.resume,
-          //   skills: data.skills || [],
-          //   socialLinks: {
-          //     website: data.socialLinks.website,
-          //     facebook: data.socialLinks.facebook,
-          //     twitter: data.socialLinks.twitter,
-          //     instagram: data.socialLinks.instagram,
-          //     linkedin: data.socialLinks.linkedin,
-          //     github: data.socialLinks.github,
-          //     behance: data.socialLinks.behance,
-          //     dribbble: data.socialLinks.dribbble,
-          //   },
-          //   education: {
-          //     degree: data.education.degree || "",
-          //     fieldOfStudy: data.education.fieldOfStudy || "",
-          //     institution: data.education.institution || "",
-          //     graduationYear: data.education.graduationYear || null,
-          //   },
-          //   workExperience: data.workExperience || [],
-          //   achievements: data.achievements || [],
-          //   projects: data.projects.map((project: any) => ({
-          //     name: project.name,
-          //     description: project.description,
-          //     imgLink: project.imgLink,
-          //     stack: project.stack || [],
-          //     SourceCode: project.SourceCode,
-          //     livePreview: project.livePreview,
-          //   })),
-          // },
         }),
       });
+      console.log(user?.fullName)
+      console.log(data)
 
       if (!response.ok) {
         throw new Error(`Failed to update profile: ${response.status} ${response.statusText}`);
@@ -291,7 +258,7 @@ export function PlaceholdersAndVanishInput({
       const data = await response.json();
       console.log("Promptrepo Response:", data);
 
-      updateProfile(data[0]?.Portfolio_data.data);
+      updateProfile(data[0]?.Portfolio_data);
 
     } catch (error) {
       console.error("Error fetching response:", error);
