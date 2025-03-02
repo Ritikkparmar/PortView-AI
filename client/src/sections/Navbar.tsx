@@ -19,8 +19,6 @@ export default function Navbar() {
       const fetchUserData = async () => {
         try {
             const email = user.primaryEmailAddress?.emailAddress || "";
-          console.log(user);
-          // Check if the user exists in the database
           const response = await fetch(
             `${
               process.env.NEXT_PUBLIC_BACKEND_URL
@@ -29,10 +27,8 @@ export default function Navbar() {
 
           if (response.ok) {
             const data = await response.json();
-            console.log(data);
-            setUserProfile(data); // Update context with user data
+            setUserProfile(data); 
           } else {
-            // User doesn't exist, create a new one
             const newUser = {
               name: user.fullName,
               picture: user.imageUrl,
