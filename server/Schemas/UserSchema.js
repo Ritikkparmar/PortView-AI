@@ -9,7 +9,8 @@ const userSchema = new mongoose.Schema(
     picture: String,
     email: { type: String, required: true },
     portfolios: Array,
-    profile: Object
+    profile: Object,
+    chats: Array
   }
 )
 

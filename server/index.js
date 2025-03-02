@@ -8,7 +8,7 @@ const app = express();
 
 // CORS Configuration
 app.use(cors({
-    origin: ['https://myai-portfolio.vercel.app','http://localhost:3000', 'https://career-craft-ai.vercel.app', 'http://localhost:5173'],
+    origin: ['https://myai-portfolio.vercel.app','http://localhost:3000', 'https://career-craft-ai.vercel.app', 'http://localhost:5173', 'https://ai-career-pilot.vercel.app'],
     methods: 'GET, POST, PUT, DELETE',
     allowedHeaders: 'Content-Type',
     credentials: true,

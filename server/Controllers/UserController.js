@@ -1,4 +1,5 @@
 const Users = require("../Schemas/UserSchema")
+const { v4: uuidv4 } = require("uuid");
 
 function capitalize(str) {
     return str.charAt(0).toUpperCase() + str.slice(1)
@@ -202,4 +203,95 @@ const updateUserProfile = async (req, res) => {
 }
 
 
-module.exports = { createUser, getAllUsers, getUser, getUserByEmail, updatePortfolios, updateUserProfile }
+const addChat = async (req, res) => {
+    try {
+        const { userId, jobRole, jobDescription } = req.body;
+
+        const user = await Users.findOne({ UserId: userId });
+        if (!user) return res.status(404).json({ message: "User not found" });
+
+        const newChat = {
+            chatId: uuidv4(),
+            jobRole,
+            jobDescription,
+            chat: []
+        };
+
+        user.chats.push(newChat);
+        await user.save();
+
+        res.status(201).json({ message: "Chat added successfully", chat: newChat });
+    } catch (error) {
+        res.status(500).json({ message: "Error adding chat", error: error.message });
+    }
+};
+
+
+const getChats = async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const user = await Users.findOne({ UserId: userId });
+
+        if (!user) return res.status(404).json({ message: "User not found" });
+
+        res.status(200).json(user.chats);
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching chats", error: error.message });
+    }
+};
+
+const getChatById = async (req, res) => {
+    try {
+        const { userId, chatId } = req.params;
+        const user = await Users.findOne({ UserId: userId });
+
+        if (!user) return res.status(404).json({ message: "User not found" });
+
+        const chat = user.chats.find(c => c.chatId === chatId);
+
+        if (!chat) return res.status(404).json({ message: "Chat not found" });
+
+        res.status(200).json(chat);
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching chat", error: error.message });
+    }
+};
+
+const updateChat = async (req, res) => {
+    try {
+        const { userId, chatId } = req.params;
+        const { updatedChat } = req.body;
+
+        const updatedUser = await Users.findOneAndUpdate(
+            { UserId: userId, "chats.chatId": chatId },
+            { $push: { "chats.$.chat": { $each: updatedChat.chat } } },
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedUser) return res.status(404).json({ message: "User or Chat not found" });
+
+        res.status(200).json({ message: "Chat updated successfully", chat: updatedUser.chats.find(c => c.chatId === chatId) });
+    } catch (error) {
+        res.status(500).json({ message: "Error updating chat", error: error.message });
+    }
+};
+
+
+const deleteChat = async (req, res) => {
+    try {
+        const { userId, chatId } = req.params;
+        const user = await Users.findOne({ UserId: userId });
+
+        if (!user) return res.status(404).json({ message: "User not found" });
+
+        user.chats = user.chats.filter(c => c.chatId !== chatId);
+        await user.save();
+
+        res.status(200).json({ message: "Chat deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ message: "Error deleting chat", error: error.message });
+    }
+};
+
+
+module.exports = { createUser, getAllUsers, getUser, getUserByEmail, updatePortfolios, updateUserProfile, addChat, getChats, getChatById, updateChat, deleteChat }
