@@ -4,10 +4,9 @@ import React, { useState, useRef, useEffect } from 'react';
 import { SendHorizontal, Upload, AudioLines, Loader2 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import Image from 'next/image';
-import advisorimg from "@/assets/Advisor.svg"
+import advisorimg from "@/assets/Advisor.svg";
 import { useMyContext } from '@/context/MyContext';
 import { useParams } from "next/navigation";
-
 
 type Message = {
     text: string;
@@ -19,36 +18,39 @@ const API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
 export default function Interviewbot() {
     const [messages, setMessages] = useState<Message[]>([]);
     const [input, setInput] = useState('');
-    const messagesEndRef = useRef<HTMLDivElement>(null);
-    const [loading, setLoading] = useState(false);
-    const [lastQuestion, setLastQuestion] = useState<string>("Tell me about yourself");
     const [jobRole, setJobRole] = useState("");
     const [jobDescription, setJobDescription] = useState("");
+    const messagesEndRef = useRef<HTMLDivElement>(null);
+    const [loading, setLoading] = useState(false);
     const { userProfile } = useMyContext();
     const params = useParams();
     const chatId = params.chatId as string;
 
-
     useEffect(() => {
         fetchChatHistory();
     }, [chatId, userProfile]);
-
+    
+    useEffect(() => {
+        if (jobRole && jobDescription && messages.length === 0 && !loading) {
+            startInterview();
+        }
+    }, [jobRole, jobDescription, messages, loading]);
+    
     const fetchChatHistory = async () => {
         if (userProfile?.UserId) {
             try {
                 const userId = userProfile?.UserId;
                 const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/chat/${userId}/${chatId}`);
-
                 const chatData = await response.json();
-                console.log(chatData)
-                setMessages(chatData.chat);
-                setJobRole(chatData.jobRole);
-                setJobDescription(chatData.jobDescription);
+                console.log("Chatdata", chatData);
+                setMessages(chatData.chat || []);
+                setJobRole(chatData.jobRole || "");
+                setJobDescription(chatData.jobDescription || "");
             } catch (error) {
                 console.error("Error fetching chat history:", error);
             }
         } else {
-            return
+            return;
         }
     };
 
@@ -72,76 +74,136 @@ export default function Interviewbot() {
         }
     };
 
-    const sendMessage = async () => {
-        if (!input.trim()) return;
+    const fetchGeminiResponse = async (requestBody: object): Promise<string> => {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(requestBody),
+        });
 
-        const userMessage: Message = { text: input, sender: 'user' };
-        setMessages(prev => [...prev, userMessage]); // Update UI first
-
-        setInput('');
-        setLoading(true);
-        await updateChatInDB([userMessage]); // Send only user message
-
-        try {
-            const botReply = await fetchGeminiResponse(lastQuestion, input);
-            const botMessage: Message = { text: botReply, sender: 'bot' };
-
-            setMessages(prev => [...prev, botMessage]); // Update UI with bot response
-            await updateChatInDB([botMessage]); // Send only bot message
-
-            const nextQuestion = botReply.split("\n").pop()?.trim() || "Can you elaborate?";
-            setLastQuestion(nextQuestion);
-        } catch (error) {
-            console.error('Error fetching Gemini response:', error);
-            setMessages(prev => [...prev, { text: "Error fetching response. Please try again.", sender: 'bot' }]);
-        } finally {
-            setLoading(false);
-        }
+        const data = await response.json();
+        let rawResponse = data?.candidates?.[0]?.content?.parts?.[0]?.text || "No response from AI.";
+        rawResponse = rawResponse
+            .replace(/\*\*Feedback:\*\*/g, "Feedback:")
+            .replace(/\*\*Next Question:\*\*/g, "Next Question:");
+        return rawResponse;
     };
 
-    const fetchGeminiResponse = async (question: string, answer: string) => {
-        const requestBody = {
+    const getStartInterviewBody = () => ({
+        contents: [
+            {
+                parts: [{
+                    text: `You are an AI interviewer conducting a structured job interview. Job Role: ${jobRole}, Job Description: ${jobDescription}. This is the start of the interview. Ask the first relevant question based on the job role and description to begin the conversation effectively. ` 
+                }],
+            },
+        ],
+    });
+
+    const getUserAnswerBody = (chatHistory: Message[]) => {
+        const chatString = chatHistory
+            .map((msg) => `${msg.sender === 'user' ? 'Candidate' : 'Interviewer'}: ${msg.text}`)
+            .join("\n");
+
+        return {
             contents: [
                 {
                     parts: [{
                         text: `You are an AI interviewer conducting a structured job interview.  
                         Job Role: ${jobRole}  
                         Job Description: ${jobDescription}  
-                        
-                        You will ask interview questions one by one.  
-                        After each question, the candidate provides an answer.  
-                        You must analyze the answer and provide brief constructive feedback (mention strengths and areas for improvement).  
-                        Then, ask the next relevant question.  
-    
-                        Previous Question: ${question}  
-                        Candidate's Answer: ${answer}  
-                        
-                        Provide feedback in a professional yet conversational tone.  
-                        Format the response like this:
-    
-                        Feedback: [Provide feedback here]
-                        Next Question:[Ask the next relevant interview question]
-                        `
-                    }]
-                }
-            ]
+
+                        Below is the full chat history of the interview so far:  
+                        ${chatString}  
+
+                        Analyze the candidate's latest answer, provide brief constructive feedback (mention strengths and areas for improvement), and ask the next relevant question that hasn’t been asked before.  
+                        Format the response like this:  
+                        Feedback: [Feedback here]  
+                        Next Question: [Next relevant interview question]`
+                    }],
+                },
+            ],
         };
-
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(requestBody)
-        });
-
-        const data = await response.json();
-        let rawResponse = data?.candidates?.[0]?.content?.parts?.[0]?.text || "No response from AI.";
-
-        rawResponse = rawResponse
-            .replace(/\*\*Feedback:\*\*/g, "Feedback:")
-            .replace(/\*\*Next Question:\*\*/g, "Next Question:");
-
-        return rawResponse;
     };
+
+    // const getFinalFeedbackBody = (chatHistory: Message[]) => {
+    //     const chatString = chatHistory
+    //         .map((msg) => `${msg.sender === 'user' ? 'Candidate' : 'Interviewer'}: ${msg.text}`)
+    //         .join("\n");
+
+    //     return {
+    //         contents: [
+    //             {
+    //                 parts: [{
+    //                     text: `You are an AI interviewer conducting a structured job interview.  
+    //                     Job Role: ${jobRole}  
+    //                     Job Description: ${jobDescription}  
+
+    //                     Below is the full chat history of the completed interview:  
+    //                     ${chatString}  
+
+    //                     Provide comprehensive feedback on the candidate’s overall performance throughout the interview. Highlight key strengths, areas for improvement, and any specific advice for excelling in the given job role.  
+    //                     Format the response like this:  
+    //                     Final Feedback: [Comprehensive feedback here]`
+    //                 }],
+    //             },
+    //         ],
+    //     };
+    // };
+
+    const startInterview = async () => {
+        setLoading(true);
+        try {
+            const initialQuestion = await fetchGeminiResponse(getStartInterviewBody());
+            console.log("Start interview",initialQuestion)
+            console.log("Start question",initialQuestion)
+            const botMessage: Message = { text: initialQuestion, sender: 'bot' };
+            setMessages([botMessage]);
+            await updateChatInDB([botMessage]);
+        } catch (error) {
+            console.error('Error starting interview:', error);
+            setMessages([{ text: "Error starting interview. Please try again.", sender: 'bot' }]);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const sendMessage = async () => {
+        if (!input.trim()) return;
+
+        const userMessage: Message = { text: input, sender: 'user' };
+        setMessages((prev) => [...prev, userMessage]);
+        setInput('');
+        setLoading(true);
+        await updateChatInDB([userMessage]);
+
+        try {
+            const botReply = await fetchGeminiResponse(getUserAnswerBody([...messages, userMessage]));
+            console.log("send message",getUserAnswerBody([...messages, userMessage]));
+            const botMessage: Message = { text: botReply, sender: 'bot' };
+            setMessages((prev) => [...prev, botMessage]);
+            await updateChatInDB([botMessage]);
+        } catch (error) {
+            console.error('Error fetching Gemini response:', error);
+            setMessages((prev) => [...prev, { text: "Error fetching response.", sender: 'bot' }]);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // const endInterview = async () => {
+    //     setLoading(true);
+    //     try {
+    //         const finalFeedback = await fetchGeminiResponse(getFinalFeedbackBody(messages));
+    //         const botMessage: Message = { text: finalFeedback, sender: 'bot' };
+    //         setMessages((prev) => [...prev, botMessage]);
+    //         await updateChatInDB([botMessage]);
+    //     } catch (error) {
+    //         console.error('Error fetching final feedback:', error);
+    //         setMessages((prev) => [...prev, { text: "Error generating final feedback.", sender: 'bot' }]);
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // };
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -151,9 +213,9 @@ export default function Interviewbot() {
     return (
         <div className="flex flex-col justify-end items-center h-full w-full max-w-6xl text-white p-4 pb-2">
             <div className="w-full max-w-3xl flex flex-col space-y-2 overflow-y-auto h-[65vh] p-2 no-scrollbar">
-                {messages.length === 0 && (
-                    <div className='w-full h-full flex items-center justify-center'>
-                        <Image src={advisorimg} alt='AI Advisor' />
+                {messages.length === 0 && !loading && (
+                    <div className="w-full h-full flex items-center justify-center">
+                        <Image src={advisorimg} alt="AI Advisor" />
                     </div>
                 )}
                 {messages.map((msg, index) => (
@@ -175,16 +237,16 @@ export default function Interviewbot() {
             </div>
 
             <div className="w-full max-w-3xl flex items-center space-x-2 mt-4">
-                <div className='bg-[#171717] rounded-lg px-4 pt-4 pb-2 w-full max-w-3xl'>
-                    <div className='flex items-center justify-between space-x-2 mb-2'>
+                <div className="bg-[#171717] rounded-lg px-4 pt-4 pb-2 w-full max-w-3xl">
+                    <div className="flex items-center justify-between space-x-2 mb-2">
                         <input
                             type="text"
                             className="flex-1 bg-[#171717] text-white outline-none w-full max-w-3xl px-2"
-                            placeholder="Ask me an interview question..."
+                            placeholder="Type your answer..."
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
                             onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
-                            disabled={loading}
+                            disabled={loading || messages.length === 0}
                         />
                         <button onClick={sendMessage} className="bg-[#7d47ea] p-2 font-semibold min-w-max rounded-full
               hover:scale-105
