@@ -197,79 +197,164 @@ export function PlaceholdersAndVanishInput({
     }
   };
 
-  async function updateProfile(data:any) {
-    try {
-      const response = await fetch('https://career-craft-ai-server.vercel.app/user/updateprofile', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: user?.fullName || "",
-          email: user?.primaryEmailAddress?.emailAddress || "",
-          profile:data
-        }),
-      });
-      console.log(user?.fullName)
-      console.log(data)
-
-      if (!response.ok) {
-        throw new Error(`Failed to update profile: ${response.status} ${response.statusText}`);
-      }
-
-      const result = await response.json();
-      console.log('Profile updated successfully:', result);
-      return result;
-    } catch (error:any) {
-      console.error('Error updating profile:', error.message);
-      return null;
-    }
-  }
-
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!value.trim()) {
-      alert("Input cannot be empty!");
-      setLoading(false);
-      return;
+        alert('Input cannot be empty!');
+        setLoading(false);
+        return;
     }
+
     if (!isSignedIn) {
-      alert("You must be logged in to submit!");
-      setLoading(false);
-      return;
+        alert('You must be logged in to submit!');
+        setLoading(false);
+        return;
     }
 
     setLoading(true);
 
     try {
-      console.log("Start request");
+        console.log('Sending prompt to promptrepo:', value);
+        const response = await fetch('/api/promptrepo', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ resumeDetails: value }),
+        });
 
-      const response = await fetch("/api/promptrepo", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ resumeDetails: value }),
-      });
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
 
-      if (!response.ok)
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        const data = await response.json();
+        console.log('Raw promptrepo response:', data);
 
-      const data = await response.json();
-      console.log("Promptrepo Response:", data);
+        // Check if we have valid portfolio data
+        if (!data || !data[0]?.Portfolio_data) {
+            console.error('Invalid portfolio data structure:', data);
+            throw new Error('Invalid portfolio data received');
+        }
 
-      updateProfile(data[0]?.Portfolio_data);
+        const portfolioData = data[0].Portfolio_data;
+        
+        // Format the data to match the expected structure
+        const formattedData = {
+            fullName: user?.fullName || portfolioData.fullName || "",
+            phoneNumber: portfolioData.phoneNumber || "",
+            role: portfolioData.role || "Software Developer", // Default role
+            emailAddress: user?.primaryEmailAddress?.emailAddress || portfolioData.emailAddress || "",
+            bio: portfolioData.bio || value, // Use the prompt as bio if none provided
+            resume: portfolioData.resume || "",
+            skills: portfolioData.skills || [],
+            socialLinks: {
+                website: portfolioData.socialLinks?.website || "",
+                facebook: portfolioData.socialLinks?.facebook || "",
+                twitter: portfolioData.socialLinks?.twitter || "",
+                instagram: portfolioData.socialLinks?.instagram || "",
+                linkedin: portfolioData.socialLinks?.linkedin || "",
+                github: portfolioData.socialLinks?.github || "",
+                behance: portfolioData.socialLinks?.behance || "",
+                dribbble: portfolioData.socialLinks?.dribbble || ""
+            },
+            education: {
+                degree: portfolioData.education?.degree || "",
+                fieldOfStudy: portfolioData.education?.fieldOfStudy || "",
+                institution: portfolioData.education?.institution || "",
+                graduationYear: portfolioData.education?.graduationYear || null
+            },
+            workExperience: portfolioData.workExperience?.length ? portfolioData.workExperience : [{
+                jobTitle: "",
+                organization: "",
+                duration: "",
+                description: ""
+            }],
+            achievements: portfolioData.achievements?.length ? portfolioData.achievements : [{
+                title: "",
+                description: "",
+                year: null
+            }],
+            projects: portfolioData.projects?.length ? portfolioData.projects : [{
+                name: "",
+                description: "",
+                imgLink: "",
+                stack: [],
+                SourceCode: "",
+                livePreview: ""
+            }]
+        };
 
+        console.log('Formatted portfolio data:', formattedData);
+        
+        // Update the profile
+        const updateResult = await updateProfile(formattedData);
+        console.log('Profile update result:', updateResult);
+
+        if (!updateResult) {
+            throw new Error('Failed to update profile');
+        }
+
+        // Refresh the user profile data
+        const email = user?.primaryEmailAddress?.emailAddress;
+        console.log('Fetching updated user profile for email:', email);
+        if (email) {
+            const userResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/verify/?email=${encodeURIComponent(email)}`);
+            if (!userResponse.ok) {
+                throw new Error('Failed to fetch updated user profile');
+            }
+            const userData = await userResponse.json();
+            console.log('Updated user profile:', userData);
+            setUserProfile(userData);
+        }
+
+        // Show success message
+        alert('Portfolio generated successfully! Click the preview button to view your portfolio.');
     } catch (error) {
-      console.error("Error fetching response:", error);
+        console.error('Error in handleSubmit:', error);
+        alert('Failed to generate portfolio. Please try again.');
+    } finally {
+        setLoading(false);
+        vanishAndSubmit();
+        onSubmit && onSubmit(e);
     }
-
-    vanishAndSubmit();
-    onSubmit && onSubmit(e);
   };
 
   const [loading, setLoading] = useState(false);
   const { isSignedIn, user } = useUser();
+  const { setUserProfile } = useMyContext();
+
+  async function updateProfile(data: any) {
+    try {
+        if (!user) {
+            throw new Error('User is not signed in.');
+        }
+
+        console.log('Updating profile with data:', data);
+        const response = await fetch('http://localhost:5000/user/updateprofile', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name: user?.fullName || 'Unknown User',
+                email: user?.primaryEmailAddress?.emailAddress || 'unknown@example.com',
+                profile: data,
+            }),
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Profile update failed:', errorText);
+            throw new Error(`Failed to update profile: ${response.status} ${response.statusText} - ${errorText}`);
+        }
+
+        const result = await response.json();
+        console.log('Profile update successful:', result);
+        return result;
+    } catch (error: any) {
+        console.error('Error updating profile:', error.message, error);
+        return null;
+    }
+  }
 
   return (
     <form

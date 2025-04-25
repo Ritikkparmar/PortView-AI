@@ -1,64 +1,29 @@
-import React, { createContext, useState } from 'react'
+import { createContext, useState, useCallback } from 'react';
 
-export const AppContext = createContext()
+export const AppContext = createContext();
 
-const ParentContext = ({ children }) => {
-    const [user, setUser] = useState(
-        {
-            "fullName": "",
-            "phoneNumber": "",
-            "role": "",
-            "emailAddress": "",
-            "bio": "",
-            "resume": "",
-            "skills": [],
-            "socialLinks": {
-                "website": "",
-                "facebook": "",
-                "twitter": "",
-                "instagram": "",
-                "linkedin": "",
-                "github": "",
-                "behance": "",
-                "dribbble": ""
-            },
-            "education": {
-                "degree": "",
-                "fieldOfStudy": "",
-                "institution": "",
-                "graduationYear": ""
-            },
-            "workExperience": [
-                {
-                    "jobTitle": "",
-                    "organization": "",
-                    "duration": "",
-                    "description": ""
-                }
-            ],
-            "achievements": [
-                {
-                    "title": "",
-                    "description": "",
-                    "year": ""
-                }
-            ],
-            "projects": [
-                {
-                    "name": "",
-                    "description": "",
-                    "imgLink": "",
-                    "stack": [],
-                    "SourceCode": "",
-                    "livePreview": ""
-                }
-            ]
-        }
-    )
+export const AppProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
 
-    return <AppContext.Provider value={{ user, setUser }}>
-        {children}
+  const updateUser = useCallback((newUserData) => {
+    console.log('AppContext - Updating user with:', newUserData);
+    if (!newUserData) {
+      console.warn('Attempted to set user data to null or undefined');
+      return;
+    }
+    setUser(newUserData);
+  }, []);
+
+  const value = {
+    user,
+    setUser: updateUser
+  };
+
+  return (
+    <AppContext.Provider value={value}>
+      {children}
     </AppContext.Provider>
-}
+  );
+};
 
-export default ParentContext
+export default AppProvider;

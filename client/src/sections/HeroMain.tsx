@@ -55,12 +55,12 @@ export default function HeroMain() {
                         `inline animate-gradient bg-gradient-to-r from-[#ffaa40] via-[#7D47EA] to-[#ffaa40] bg-[length:var(--bg-size)_100%] bg-clip-text text-transparent`,
                     )}
                 >
-                    Introducing Career Craft AI
+                    Introducing PortView AI
                 </span>
             </AnimatedGradientText>
             <div className="relative z-20 mx-auto my-6 text-center text-3xl font-semibold tracking-tight text-neutral-300 md:text-6xl">
                 <p>Craft Your Future with</p>
-                <div className="mt-2 md:mt-8"><Cover className="py-2">AI-Optimized Resumes & Portfolios</Cover></div>
+                <div className="mt-2 md:mt-8"><Cover className="py-2">AI-Optimized Portfolios & Interview Bot</Cover></div>
             </div>
             <p className="relative z-20 mx-auto mt-4 max-w-lg px-4 text-center text-base font-medium text-gray-300 md:text-lg lg:text-lg">
                 Create Your Stunning Portfolio in Seconds. Just Enter Your Details and Get Started!

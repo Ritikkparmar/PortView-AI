@@ -1,11 +1,16 @@
 import { useContext } from "react";
-import GitHubIcon from "@mui/icons-material/GitHub";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { AppContext } from "../../context/ParentContext"; // Import AppContext
 import "./About.css";
+import { about } from '../../portfolio';
 
 const About = () => {
   const { user } = useContext(AppContext); // Access user data from context
+  console.log("User data in About:", user);
+
+  if (!user) {
+    return <div>Loading...</div>;
+  }
 
   const { fullName, role, bio, resume, socialLinks } = user;
 
@@ -35,7 +40,7 @@ const About = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <GitHubIcon />
+            <FaGithub />
           </a>
         )}
 
@@ -47,7 +52,7 @@ const About = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <LinkedInIcon />
+            <FaLinkedin />
           </a>
         )}
       </div>

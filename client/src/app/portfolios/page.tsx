@@ -6,19 +6,36 @@ import Image from "next/image";
 import portfolio1 from "@/assets/Portfolio1.png"
 import { useMyContext } from "@/context/MyContext";
 
-
-
 export default function Portfolios() {
   const { userProfile } = useMyContext();
+  console.log("User Profile in Templates: ", userProfile);
+
+  // Show loader or fallback if UserId is missing
+  if (!userProfile) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-white">
+        <p className="text-lg">Loading user profile...</p>
+      </div>
+    );
+  }
+
+  if (!userProfile.UserId) {
+    console.error("UserId is missing in userProfile:", userProfile);
+    return (
+      <div className="min-h-screen flex items-center justify-center text-white">
+        <p className="text-lg">Error: User ID not found. Please try logging in again.</p>
+      </div>
+    );
+  }
+
   const templates = [
     {
       id: 1,
       name: "Developer Portfolio",
       thumbnail: portfolio1,
-      previewLink: `https://myai-portfolio.vercel.app/?id=${userProfile.UserId}`,
+      previewLink: `http://localhost:5173/?id=${userProfile.UserId}`,
       customizeLink: "",
     },
-
   ];
 
   return (

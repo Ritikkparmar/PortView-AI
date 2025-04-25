@@ -17,7 +17,16 @@ export async function POST(req: Request) {
     }])
   });
 
-  return new NextResponse(response.body, {
-    headers: { 'Content-Type': 'text' },
-  });
+  if (!response.ok) {
+    return NextResponse.json({ error: 'Failed to fetch from promptrepo' }, { status: response.status });
+  }
+
+  const textData = await response.text();
+  try {
+    const jsonData = JSON.parse(textData);
+    return NextResponse.json(jsonData);
+  } catch (error) {
+    console.error('Error parsing promptrepo response:', error);
+    return NextResponse.json({ error: 'Invalid response format' }, { status: 500 });
+  }
 }

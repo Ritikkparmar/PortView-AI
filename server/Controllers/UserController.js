@@ -125,15 +125,24 @@ const getUser = async (req, res) => {
     const userId = Number(req.params.id); // Convert to Number
 
     try {
+        console.log('Finding user with ID:', userId);
         const data = await Users.findOne({ UserId: userId });
+        console.log('User data found:', data);
 
         if (!data) {
+            console.log('User not found for ID:', userId);
             return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Ensure the profile data is properly structured
+        if (!data.profile) {
+            console.log('No profile data found for user:', userId);
+            return res.status(404).json({ message: 'User profile not found' });
         }
 
         res.status(200).json(data);
     } catch (err) {
-        console.error(err);
+        console.error('Error in getUser:', err);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
@@ -148,59 +157,133 @@ const getUserByEmail = async (req, res) => {
         res.status(404).json({ error: "User not found" })
     }
 }
-
 const updatePortfolios = async (req, res) => {
     try {
-        const { email, portfolio } = req.body
+        const { email, portfolio } = req.body;
 
-        const user = await Users.findOne({ email })
-        if (!user) {
-            return res.status(404).json({ error: 'User not found' })
+        if (!email || !portfolio) {
+            return res.status(400).json({ error: 'Missing required fields: email or portfolio' });
         }
 
-        user.portfolios.push(portfolio)
+        const user = await Users.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
 
-        await user.save()
+        // Check for duplicate portfolios (optional, based on your requirements)
+        const isDuplicate = user.portfolios.some((p) => JSON.stringify(p) === JSON.stringify(portfolio));
+        if (isDuplicate) {
+            return res.status(400).json({ error: 'Duplicate portfolio' });
+        }
 
-        res.status(200).json({ message: 'Portfolios updated successfully', user })
+        user.portfolios.push(portfolio);
+
+        await user.save();
+
+        res.status(200).json({ message: 'Portfolios updated successfully', user });
     } catch (err) {
-        console.error(err)
-        res.status(500).send({ message: 'Internal Server Error' })
+        console.error(err);
+        res.status(500).send({ message: 'Internal Server Error' });
     }
-}
-
+};
 const updateUserProfile = async (req, res) => {
     try {
-        const { email, profile, name } = req.body
+        const { email, profile, name } = req.body;
+        console.log('Received update request:', { email, name, profile });
 
-        const existingUser = await Users.findOne({ email })
+        if (!email || !profile || !name) {
+            console.log('Missing required fields:', { email, profile, name });
+            return res.status(400).json({ error: 'Missing required fields: email, profile, or name' });
+        }
+
+        const existingUser = await Users.findOne({ email });
+        console.log('Found existing user:', existingUser ? 'Yes' : 'No');
 
         if (!existingUser) {
-            return res.status(404).json({ error: 'User not found' })
-        }
-        var [firstName, lastName] = name.split(' ')
-        if (lastName == undefined) {
-            lastName = ''
-        }
-        existingUser.FirstName = capitalize(firstName),
-            existingUser.LastName = capitalize(lastName),
-            existingUser.name = name
-        existingUser.profile = profile
-        await existingUser.save()
-
-        const updatedUser = await Users.findOne({ email })
-
-        if (updatedUser) {
-            res.status(200).json(updatedUser)
-        } else {
-            res.status(404).json({ error: 'User not found after update' })
+            return res.status(404).json({ error: 'User not found' });
         }
 
+        var [firstName, lastName] = name.split(' ');
+        if (!firstName) {
+            return res.status(400).json({ error: 'Invalid name format' });
+        }
+        if (!lastName) {
+            lastName = '';
+        }
+
+        // Transform the profile data to match the expected structure
+        const transformedProfile = {
+            fullName: profile.fullName || name,
+            phoneNumber: profile.phoneNumber || "",
+            role: profile.role || "",
+            emailAddress: profile.emailAddress || email,
+            bio: profile.bio || "",
+            resume: profile.resume || "",
+            skills: profile.skills || [],
+            socialLinks: {
+                website: profile.socialLinks?.website || "",
+                facebook: profile.socialLinks?.facebook || "",
+                twitter: profile.socialLinks?.twitter || "",
+                instagram: profile.socialLinks?.instagram || "",
+                linkedin: profile.socialLinks?.linkedin || "",
+                github: profile.socialLinks?.github || "",
+                behance: profile.socialLinks?.behance || "",
+                dribbble: profile.socialLinks?.dribbble || ""
+            },
+            education: {
+                degree: profile.education?.degree || "",
+                fieldOfStudy: profile.education?.fieldOfStudy || "",
+                institution: profile.education?.institution || "",
+                graduationYear: profile.education?.graduationYear || null
+            },
+            workExperience: profile.workExperience || [{
+                jobTitle: "",
+                organization: "",
+                duration: "",
+                description: ""
+            }],
+            achievements: profile.achievements || [{
+                title: "",
+                description: "",
+                year: null
+            }],
+            projects: profile.projects || [{
+                name: "",
+                description: "",
+                imgLink: "",
+                stack: [],
+                SourceCode: "",
+                livePreview: ""
+            }]
+        };
+
+        console.log('Updating user with transformed profile:', transformedProfile);
+
+        // Update the user document
+        const updatedUser = await Users.findOneAndUpdate(
+            { email: email },
+            {
+                $set: {
+                    FirstName: capitalize(firstName),
+                    LastName: capitalize(lastName),
+                    name: name,
+                    profile: transformedProfile
+                }
+            },
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            throw new Error('Failed to update user profile');
+        }
+
+        console.log('User profile updated successfully:', updatedUser);
+        res.status(200).json({ message: 'Profile updated successfully', user: updatedUser });
     } catch (err) {
-        console.error(err)
-        res.status(500).send({ message: 'Internal Server Error' })
+        console.error('Error in updateUserProfile:', err);
+        res.status(500).send({ message: 'Internal Server Error' });
     }
-}
+};
 
 
 const addChat = async (req, res) => {

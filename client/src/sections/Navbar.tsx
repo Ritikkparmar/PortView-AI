@@ -7,7 +7,7 @@ import { NavLinks } from "@/components/NavLinks";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import Link from "next/link";
 import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
-import logo from "@/assets/Logo.svg";
+import logo from "@/assets/logo-photoroom.png";
 import { useMyContext } from "@/context/MyContext";
 
 export default function Navbar() {
@@ -18,7 +18,7 @@ export default function Navbar() {
     if (user && user.primaryEmailAddress) {
       const fetchUserData = async () => {
         try {
-            const email = user.primaryEmailAddress?.emailAddress || "";
+          const email = user.primaryEmailAddress?.emailAddress || "";
           const response = await fetch(
             `${
               process.env.NEXT_PUBLIC_BACKEND_URL
@@ -27,7 +27,7 @@ export default function Navbar() {
 
           if (response.ok) {
             const data = await response.json();
-            setUserProfile(data); 
+            setUserProfile(data);
           } else {
             const newUser = {
               name: user.fullName,
@@ -67,12 +67,8 @@ export default function Navbar() {
     <nav className="fixed top-0 backdrop-blur-md z-30 w-full">
       <div className="flex justify-between items-center h-[10vh] px-6 md:px-32 w-full">
         <div className="flex gap-2 items-center">
-          <Image src={logo} alt="Logo" width={35} height={35} />
-          <Link
-            href="/"
-            className="font-medium font-chillax text-[1.2rem] md:text-[1.5rem] text-white"
-          >
-            CAREER CRAFT AI
+          <Link href="/">
+            <Image src={logo} alt="Logo" width={120} height={120} />
           </Link>
         </div>
 
