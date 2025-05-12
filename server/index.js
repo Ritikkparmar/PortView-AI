@@ -17,23 +17,48 @@ app.use(cors({
 // Middleware
 app.use(express.json());
 
+// Error handler
+app.use((err, req, res, next) => {
+    console.error('Error:', err.stack);
+    res.status(500).json({
+        success: false,
+        message: 'Internal Server Error',
+        error: process.env.NODE_ENV === 'development' ? err.message : undefined
+    });
+});
+
 // Routes
 const UserRouter = require("./routes/User")
 app.use('/user', UserRouter);
 
-const PORT = process.env.PORT || 5000;
+// Default Route with DB Connection Status
+app.get("/", async (req, res) => {
+    try {
+        await connectMongoDB();
+        res.send("🚀 Welcome to Career Craft AI Backend - MongoDB Connected");
+    } catch (error) {
+        console.error("MongoDB connection failed:", error);
+        res.status(500).send("🚀 Welcome to Career Craft AI Backend - MongoDB Connection Error");
+    }
+});
 
-// Connect to MongoDB and Start Server
+// Connect to MongoDB first, then define the port
 connectMongoDB()
     .then(() => {
-        app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+        const PORT = process.env.PORT || 5000;
+        
+        // Only start server in non-serverless environments
+        if (process.env.NODE_ENV !== 'production') {
+            app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+        }
     })
     .catch((error) => {
-        console.error("❌ MongoDB Connection Failed:", error);
-        process.exit(1);
+        console.error("❌ Initial MongoDB Connection Failed:", error);
+        // Don't exit process in serverless environment
+        if (process.env.NODE_ENV !== 'production') {
+            process.exit(1);
+        }
     });
 
-// Default Route
-app.get("/", (req, res) => {
-    res.send("🚀 Welcome to Career Craft AI Backend");
-});
+// Export for serverless use
+module.exports = app;
