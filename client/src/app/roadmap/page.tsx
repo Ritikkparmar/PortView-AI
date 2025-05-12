@@ -45,9 +45,9 @@ export default function Hero() {
 
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center text-white p-6">
-      <h1 className="text-4xl font-bold mb-6 text-center">Role-based Roadmaps</h1>
+      <h1 className="text-4xl font-bold mt-10 text-center">Role-based Roadmaps</h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full max-w-5xl">
+      <div className="grid grid-cols-1 mt-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full max-w-5xl">
         {roles.map((role) => (
           <motion.button
             key={role}

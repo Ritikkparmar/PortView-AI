@@ -1,45 +1,67 @@
 "use client";
 
-import { SignIn, useUser } from "@clerk/nextjs";
+import { SignUp, useUser } from "@clerk/nextjs";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useMyContext } from "@/context/MyContext";
 
 export default function Page() {
     const { isSignedIn, user } = useUser();
     const router = useRouter();
-    const { setUserProfile } = useMyContext();
 
     useEffect(() => {
-        const loadUserProfile = async () => {
+        const createUserProfile = async () => {
             if (isSignedIn && user) {
                 try {
                     const email = user.primaryEmailAddress?.emailAddress;
                     if (!email) return;
 
-                    const response = await fetch(
+                    // Check if user already exists
+                    const checkResponse = await fetch(
                         `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/verify/?email=${encodeURIComponent(email)}`
                     );
 
-                    if (response.ok) {
-                        const userData = await response.json();
-                        setUserProfile(userData);
+                    if (checkResponse.ok) {
+                        // User already exists, redirect to home
+                        router.push('/');
+                        return;
+                    }
+
+                    // Create new user
+                    const newUser = {
+                        name: user.fullName || 'Unknown User',
+                        picture: user.imageUrl,
+                        email: email,
+                    };
+
+                    const createResponse = await fetch(
+                        `${process.env.NEXT_PUBLIC_BACKEND_URL}/user`,
+                        {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify(newUser),
+                        }
+                    );
+
+                    if (createResponse.ok) {
+                        console.log('User profile created successfully');
                         router.push('/');
                     } else {
-                        console.error('Failed to load user profile');
+                        console.error('Failed to create user profile');
                     }
                 } catch (error) {
-                    console.error('Error loading user profile:', error);
+                    console.error('Error creating user profile:', error);
                 }
             }
         };
 
-        loadUserProfile();
-    }, [isSignedIn, user, router, setUserProfile]);
+        createUserProfile();
+    }, [isSignedIn, user, router]);
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-[#0A0A0A]">
-            <SignIn
+            <SignUp
                 appearance={{
                     elements: {
                         formButtonPrimary: 
@@ -56,10 +78,10 @@ export default function Page() {
                     },
                 }}
                 routing="path"
-                path="/sign-in"
-                signUpUrl="/sign-up"
+                path="/sign-up"
+                signInUrl="/sign-in"
                 redirectUrl="/"
             />
         </div>
     );
-}
+} 

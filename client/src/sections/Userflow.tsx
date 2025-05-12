@@ -6,32 +6,7 @@ import { motion } from 'framer-motion';
 import { RippleComponent } from "@/components/RippleComponent";
 
 export function Userflow() {
-
     const steps = [
-        // AI Career Advisor
-        [
-            {
-                step: "Step 1",
-                title: "Describe Your Career Goals",
-                description: "Enter your interests, skills, and aspirations to receive personalized career guidance.",
-            },
-            {
-                step: "Step 2",
-                title: "AI-Powered Career Analysis",
-                description: "Our AI evaluates your input and suggests the best career paths tailored for you.",
-            },
-            {
-                step: "Step 3",
-                title: "Get Actionable Insights",
-                description: "Receive detailed recommendations on skills, certifications, and job opportunities.",
-            },
-            {
-                step: "Step 4",
-                title: "Start Taking Action",
-                description: "Follow your personalized roadmap and track progress towards your dream career.",
-            },
-        ],
-
         // Roadmap for Success
         [
             {
@@ -85,7 +60,7 @@ export function Userflow() {
             {
                 step: "Step 1",
                 title: "Select Your Role",
-                description: "Choose the job role you’re preparing for to tailor the interview experience.",
+                description: "Choose the job role you're preparing for to tailor the interview experience.",
             },
             {
                 step: "Step 2",
@@ -107,59 +82,28 @@ export function Userflow() {
 
     const data = [
         {
-            title: "AI Career Advisor",
-            content: (
-                <div>
-                    <p className="text-neutral-300 text-xs md:text-lg font-normal mb-8">
-                    Get personalized career recommendations and insights to choose the best path for your future.
-                    </p>
-                    <section className="bg-[#0A0A0A] text-white">
-                        <div className="max-w-6xl mx-auto">
-                            <div className="grid md:grid-cols-2 gap-2 md:gap-6">
-                                {steps[0].map((step, index) => (
-                                    <motion.div
-                                        key={index}
-                                        className="bg-[#121212] p-4 md:p-6 rounded-lg shadow-lg hover:shadow-[#7D47EA]/50 transition-shadow duration-300"
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ duration: 0.4, delay: index * 0.2 }}
-                                    >
-                                        <h3 className="hidden md:block text-xl font-semibold text-[#7D47EA]">
-                                            {step.step}
-                                        </h3>
-                                        <h4 className="mt-2 text-md md:text-lg font-medium md:font-bold text-white">{step.title}</h4>
-                                        <p className="hidden md:block mt-4 text-neutral-300">{step.description}</p>
-                                    </motion.div>
-                                ))}
-                            </div>
-                        </div>
-                    </section>
-                </div>
-            ),
-        },
-        {
             title: "Roadmap for Success",
             content: (
-                <div>
-                    <p className="text-neutral-300 text-xs md:text-lg font-normal mb-8">
+                <div className="w-full max-w-7xl mx-auto">
+                    <p className="text-neutral-300 text-xs md:text-lg font-normal mb-8 text-center">
                     Follow a step-by-step AI-generated plan to upskill and achieve your career goals.
                     </p>
                     <section className="bg-[#0A0A0A] text-white">
                         <div className="max-w-6xl mx-auto">
-                            <div className="grid md:grid-cols-2 gap-2 md:gap-6">
-                                {steps[1].map((step, index) => (
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                {steps[0].map((step, index) => (
                                     <motion.div
                                         key={index}
-                                        className="bg-[#121212] p-4 md:p-6 rounded-lg shadow-lg hover:shadow-[#7D47EA]/50 transition-shadow duration-300"
+                                        className="bg-[#121212] p-6 md:p-8 rounded-lg shadow-lg hover:shadow-[#7D47EA]/50 transition-shadow duration-300"
                                         initial={{ opacity: 0, y: 20 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ duration: 0.4, delay: index * 0.2 }}
                                     >
-                                        <h3 className="hidden md:block text-xl font-semibold text-[#7D47EA]">
+                                        <h3 className="text-xl font-semibold text-[#7D47EA]">
                                             {step.step}
                                         </h3>
-                                        <h4 className="mt-2 text-md md:text-lg font-medium md:font-bold text-white">{step.title}</h4>
-                                        <p className="hidden md:block mt-4 text-neutral-300">{step.description}</p>
+                                        <h4 className="mt-2 text-lg md:text-xl font-bold text-white">{step.title}</h4>
+                                        <p className="mt-4 text-neutral-300">{step.description}</p>
                                     </motion.div>
                                 ))}
                             </div>
@@ -171,26 +115,26 @@ export function Userflow() {
         {
             title: "Portfolio Website Generator",
             content: (
-                <div>
-                    <p className="text-neutral-300 text-xs md:text-lg font-normal mb-4">
+                <div className="w-full max-w-7xl mx-auto">
+                    <p className="text-neutral-300 text-xs md:text-lg font-normal mb-8 text-center">
                     Instantly create a professional portfolio website to showcase your skills and work.
                     </p>
                     <section className="bg-[#0A0A0A] text-white">
                         <div className="max-w-6xl mx-auto">
-                            <div className="grid md:grid-cols-2 gap-2 md:gap-6">
-                                {steps[2].map((step, index) => (
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                {steps[1].map((step, index) => (
                                     <motion.div
                                         key={index}
-                                        className="bg-[#121212] p-4 md:p-6 rounded-lg shadow-lg hover:shadow-[#7D47EA]/50 transition-shadow duration-300"
+                                        className="bg-[#121212] p-6 md:p-8 rounded-lg shadow-lg hover:shadow-[#7D47EA]/50 transition-shadow duration-300"
                                         initial={{ opacity: 0, y: 20 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ duration: 0.4, delay: index * 0.2 }}
                                     >
-                                        <h3 className="hidden md:block text-xl font-semibold text-[#7D47EA]">
+                                        <h3 className="text-xl font-semibold text-[#7D47EA]">
                                             {step.step}
                                         </h3>
-                                        <h4 className="mt-2 text-md md:text-lg font-medium md:font-bold text-white">{step.title}</h4>
-                                        <p className="hidden md:block mt-4 text-neutral-300">{step.description}</p>
+                                        <h4 className="mt-2 text-lg md:text-xl font-bold text-white">{step.title}</h4>
+                                        <p className="mt-4 text-neutral-300">{step.description}</p>
                                     </motion.div>
                                 ))}
                             </div>
@@ -202,26 +146,26 @@ export function Userflow() {
         {
             title: "AI Interview Prep Bot",
             content: (
-                <div>
-                    <p className="text-neutral-300 text-xs md:text-lg font-normal mb-4">
+                <div className="w-full max-w-7xl mx-auto">
+                    <p className="text-neutral-300 text-xs md:text-lg font-normal mb-8 text-center">
                     Practice real interview questions and receive AI-driven feedback to boost your confidence.
                     </p>
                     <section className="bg-[#0A0A0A] text-white">
                         <div className="max-w-6xl mx-auto">
-                            <div className="grid md:grid-cols-2 gap-2 md:gap-6">
-                                {steps[3].map((step, index) => (
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                {steps[2].map((step, index) => (
                                     <motion.div
                                         key={index}
-                                        className="bg-[#121212] p-4 md:p-6 rounded-lg shadow-lg hover:shadow-[#7D47EA]/50 transition-shadow duration-300"
+                                        className="bg-[#121212] p-6 md:p-8 rounded-lg shadow-lg hover:shadow-[#7D47EA]/50 transition-shadow duration-300"
                                         initial={{ opacity: 0, y: 20 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ duration: 0.4, delay: index * 0.2 }}
                                     >
-                                        <h3 className="hidden md:block text-xl font-semibold text-[#7D47EA]">
+                                        <h3 className="text-xl font-semibold text-[#7D47EA]">
                                             {step.step}
                                         </h3>
-                                        <h4 className="mt-2 text-md md:text-lg font-medium md:font-bold text-white">{step.title}</h4>
-                                        <p className="hidden md:block mt-4 text-neutral-300">{step.description}</p>
+                                        <h4 className="mt-2 text-lg md:text-xl font-bold text-white">{step.title}</h4>
+                                        <p className="mt-4 text-neutral-300">{step.description}</p>
                                     </motion.div>
                                 ))}
                             </div>
@@ -230,7 +174,6 @@ export function Userflow() {
                 </div>
             ),
         },
-
     ];
     return (
         <div className="w-full">

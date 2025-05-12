@@ -9,7 +9,7 @@ export function Footer() {
             <div className="h-[40vh] md:h-[40rem] w-full flex flex-col items-center justify-center overflow-hidden rounded-md">
 
                 <h1 className="text-4xl md:text-7xl lg:text-9xl font-bold text-center text-white relative z-20 font-chillax mb-2">
-                    CAREER CRAFT
+                    PORTVIEW AI
                 </h1>
 
                 <div className="w-[20rem] md:w-[40rem] h-20 md:h-40 relative">

@@ -9,14 +9,14 @@ export default function FooterMain() {
             <Link href="/" passHref>
               <div className="flex items-center justify-center space-x-2 text-2xl font-bold text-center text-gray-100 selection:bg-emerald-500 mr-10 py-0 cursor-pointer">
                 <div className="flex flex-col">
-                  <h1 className="text-white font-chillax">CAREER CRAFT AI</h1>
+                  <h1 className="text-white font-chillax">PortView AI</h1>
                 </div>
               </div>
             </Link>
           </div>
           <div>
             Product by{' '}
-            <span className="text-sky-500 font-medium">Error505</span>
+            <span className="text-sky-500 font-medium">Ritik Parmar</span>
           </div>
           <div className="mt-2">
             contact at{' '}
@@ -26,15 +26,12 @@ export default function FooterMain() {
               href="#"
               rel="noopener noreferrer"
             >
-              @craftAI
+              @portviewai
             </a>
           </div>
         </div>
         <div className="grid grid-cols-3 gap-10 items-start mt-10 md:mt-0">
           <div className="flex justify-center space-y-4 flex-col mt-4">
-            <a className="transition-colors hover:text-white/80 text-white/60" href="#career-advisor">
-              AI Career Advisor
-            </a>
             <a className="transition-colors hover:text-white/80 text-white/60" href="#roadmap">
               Roadmap for Success
             </a>
@@ -76,7 +73,7 @@ export default function FooterMain() {
             <a
               target="__blank"
               className="transition-colors hover:text-white/80 text-white/60"
-              href="mailto:support@careercraftai.com"
+              href="mailto:support@portviewai.com"
               rel="noopener noreferrer"
             >
               Contact Us

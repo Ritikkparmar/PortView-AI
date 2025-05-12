@@ -14,22 +14,17 @@ const workSans = Work_Sans({
 })
 
 export default function FAQs() {
-
     const questions = [
         {
-            question: "What is Career Craft AI?",
-            answer: "Career Craft AI is an all-in-one platform that helps users build their careers with AI-powered tools. It provides career guidance, personalized roadmaps, portfolio creation, and interview preparation to make job hunting easier and more effective."
-        },
-        {
-            question: "How does the AI Career Advisor help me?",
-            answer: "Our AI Career Advisor analyzes your skills, interests, and career goals to recommend the best career paths and opportunities. It provides personalized insights to help you make informed decisions."
+            question: "What is PortView AI?",
+            answer: "PortView AI is an all-in-one platform that helps users build their careers with AI-powered tools. It provides personalized roadmaps, portfolio creation, and interview preparation to make job hunting easier and more effective."
         },
         {
             question: "What is the Roadmap for Success tool?",
             answer: "The Roadmap for Success tool generates a structured learning path based on your chosen career. It outlines the essential skills, courses, and projects you need to master for your desired role."
         },
         {
-            question: "Can I create my own portfolio using Career Craft AI?",
+            question: "Can I create my own portfolio using PortView AI?",
             answer: "Yes! Our Portfolio Website Generator allows you to create a professional-looking portfolio effortlessly. Just input your details, and AI will generate a stunning website to showcase your work."
         },
         {
@@ -37,19 +32,19 @@ export default function FAQs() {
             answer: "Our AI-powered chatbot simulates real interview scenarios, providing relevant questions and giving instant feedback. It helps you practice and improve your responses before the actual interview."
         },
         {
-            question: "Is Career Craft AI suitable for beginners?",
-            answer: "Absolutely! Whether you’re a student, a job seeker, or an experienced professional, our AI-driven tools are designed to guide you at every step of your career journey."
+            question: "Is PortView AI suitable for beginners?",
+            answer: "Absolutely! Whether you're a student, a job seeker, or an experienced professional, our AI-driven tools are designed to guide you at every step of your career journey."
         },
         {
             question: "Do I need any coding skills to use this platform?",
-            answer: "No, Career Craft AI is user-friendly and requires no coding knowledge. The platform is designed for everyone, from tech professionals to non-tech users."
+            answer: "No, PortView AI is user-friendly and requires no coding knowledge. The platform is designed for everyone, from tech professionals to non-tech users."
         },
         {
-            question: "Is Career Craft AI free to use?",
+            question: "Is PortView AI free to use?",
             answer: "Some features are available for free, while premium features may require a subscription. Check our pricing page for more details."
         },
         {
-            question: "How do I get started with Career Craft AI?",
+            question: "How do I get started with PortView AI?",
             answer: "Simply sign up on our platform, explore the tools, and start building your career with AI-powered assistance!"
         }
     ];

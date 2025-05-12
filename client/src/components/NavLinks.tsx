@@ -8,10 +8,7 @@ export function NavLinks() {
   );
 }
 export const projects = [
-  {
-    title: "AI Advisor",
-    link: "advisor",
-  },
+ 
   {
     title: "Portfolios",
     link: "portfolios",

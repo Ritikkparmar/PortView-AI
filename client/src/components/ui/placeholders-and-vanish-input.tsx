@@ -42,39 +42,50 @@ export function PlaceholdersAndVanishInput({
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }) {
   const [currentPlaceholder, setCurrentPlaceholder] = useState(0);
+  const [value, setValue] = useState("");
+  const [animating, setAnimating] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const startAnimation = () => {
-    intervalRef.current = setInterval(() => {
-      setCurrentPlaceholder((prev) => (prev + 1) % placeholders.length);
-    }, 3000);
-  };
-  const handleVisibilityChange = () => {
-    if (document.visibilityState !== "visible" && intervalRef.current) {
-      clearInterval(intervalRef.current); // Clear the interval when the tab is not visible
-      intervalRef.current = null;
-    } else if (document.visibilityState === "visible") {
-      startAnimation(); // Restart the interval when the tab becomes visible
-    }
-  };
-
-  useEffect(() => {
-    startAnimation();
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-    };
-  }, [placeholders]);
-
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const newDataRef = useRef<any[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
-  const [value, setValue] = useState("");
-  const [animating, setAnimating] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const startAnimation = useCallback(() => {
+    if (!mounted) return;
+    
+    intervalRef.current = setInterval(() => {
+      setCurrentPlaceholder((prev) => (prev + 1) % placeholders.length);
+    }, 3000);
+  }, [placeholders.length, mounted]);
+
+  const handleVisibilityChange = useCallback(() => {
+    if (document.visibilityState !== "visible" && intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    } else if (document.visibilityState === "visible") {
+      startAnimation();
+    }
+  }, [startAnimation]);
+
+  useEffect(() => {
+    if (mounted) {
+      startAnimation();
+      document.addEventListener("visibilitychange", handleVisibilityChange);
+
+      return () => {
+        if (intervalRef.current) {
+          clearInterval(intervalRef.current);
+        }
+        document.removeEventListener("visibilitychange", handleVisibilityChange);
+      };
+    }
+  }, [mounted, startAnimation, handleVisibilityChange]);
 
   const draw = useCallback(() => {
     if (!inputRef.current) return;
@@ -318,7 +329,6 @@ export function PlaceholdersAndVanishInput({
     }
   };
 
-  const [loading, setLoading] = useState(false);
   const { isSignedIn, user } = useUser();
   const { setUserProfile } = useMyContext();
 
@@ -364,97 +374,100 @@ export function PlaceholdersAndVanishInput({
       )}
       onSubmit={handleSubmit}
     >
-      <canvas
-        className={cn(
-          "absolute pointer-events-none text-sm transform scale-50 top-[20%] left-2 sm:left-6 origin-top-left filter invert-0 pr-16",
-          !animating ? "opacity-0" : "opacity-100"
-        )}
-        ref={canvasRef}
-      />
-
-      <input
-        onChange={(e) => {
-          if (!animating) {
-            setValue(e.target.value);
-            onChange && onChange(e);
-          }
-        }}
-        onKeyDown={handleKeyDown}
-        ref={inputRef}
-        value={value}
-        type="text"
-        className={cn(
-          "w-[80%] relative text-sm sm:text-sm z-50 border-none text-white bg-transparent h-full rounded-full focus:outline-none focus:ring-0 pl-4 sm:pl-10 pr-[4.5rem]", // Adjusted padding
-          animating && "text-transparent"
-        )}
-      />
-
-      <Loader loadingStates={loadingStates} loading={loading} duration={2000} />
-
-      <button
-        onClick={() => setLoading(true)}
-        className="absolute right-0 top-0 bottom-0 z-50 h-full min-w-max px-4 sm:px-5 rounded-lg 
-                            bg-[radial-gradient(72.97%_270%_at_50%_50%,_rgb(168,129,254)_0%,_rgb(100,25,255)_75%)]
-                            shadow-[rgba(168,129,254,0.64)_0px_2px_12px_0px,_rgb(168,129,254)_0px_1px_1px_0px_inset] 
-                            transition duration-200 flex items-center justify-center gap-2 text-white text-lg font-semibold hover:cursor-pointer
-                            
-                            hover:bg-[radial-gradient(72.97%_270%_at_50%_50%,_rgb(178,139,255)_0%,_rgb(120,50,255)_80%)]
-                            hover:shadow-[rgba(178,139,255,0.8)_0px_4px_16px_0px,_rgb(178,139,255)_0px_2px_2px_0px_inset] 
-                            hover:scale-105 
-                            
-                            active:bg-[radial-gradient(72.97%_270%_at_50%_50%,_rgb(150,100,250)_0%,_rgb(90,20,220)_85%)]
-                            active:shadow-[rgba(150,100,250,0.75)_0px_2px_10px_0px,_rgb(150,100,250)_0px_1px_1px_0px_inset] 
-                            active:scale-95"
-      >
-        ✨ Generate
-        <motion.svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="text-gray-300 h-3 w-3 sm:h-4 sm:w-4"
-        >
-          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-          <motion.path
-            d="M5 12l14 0"
-            initial={{ strokeDasharray: "50%", strokeDashoffset: "50%" }}
-            animate={{ strokeDashoffset: value ? 0 : "50%" }}
-            transition={{ duration: 0.3, ease: "linear" }}
+      {mounted && (
+        <>
+          <canvas
+            className={cn(
+              "absolute pointer-events-none text-sm transform scale-50 top-[20%] left-2 sm:left-6 origin-top-left filter invert-0 pr-16",
+              !animating ? "opacity-0" : "opacity-100"
+            )}
+            ref={canvasRef}
           />
-          <path d="M13 18l6 -6" />
-          <path d="M13 6l6 6" />
-        </motion.svg>
-      </button>
-      {loading && (
-        <button
-          className="fixed top-20 right-20 text-white z-[120]"
-          onClick={() => setLoading(false)}
-        >
-          <IconSquareRoundedX className="h-10 w-10" />
-        </button>
-      )}
 
-      <div className="absolute inset-0 flex items-center rounded-full pointer-events-none">
-        <AnimatePresence mode="wait">
-          {!value && (
-            <motion.p
-              initial={{ y: 5, opacity: 0 }}
-              key={`current-placeholder-${currentPlaceholder}`}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -15, opacity: 0 }}
-              transition={{ duration: 0.3, ease: "linear" }}
-              className="text-zinc-500 text-xs sm:text-sm font-normal pl-4 sm:pl-10 text-left w-[calc(100%-5rem)] truncate"
+          <input
+            onChange={(e) => {
+              if (!animating) {
+                setValue(e.target.value);
+                onChange && onChange(e);
+              }
+            }}
+            onKeyDown={handleKeyDown}
+            ref={inputRef}
+            value={value}
+            type="text"
+            className={cn(
+              "w-[80%] relative text-sm sm:text-sm z-50 border-none text-white bg-transparent h-full rounded-full focus:outline-none focus:ring-0 pl-4 sm:pl-10 pr-[4.5rem]",
+              animating && "text-transparent"
+            )}
+          />
+
+          <Loader loadingStates={loadingStates} loading={loading} duration={2000} />
+
+          <button
+            onClick={() => setLoading(true)}
+            className="absolute right-0 top-0 bottom-0 z-50 h-full min-w-max px-4 sm:px-5 rounded-lg 
+              bg-[radial-gradient(72.97%_270%_at_50%_50%,_rgb(168,129,254)_0%,_rgb(100,25,255)_75%)]
+              shadow-[rgba(168,129,254,0.64)_0px_2px_12px_0px,_rgb(168,129,254)_0px_1px_1px_0px_inset] 
+              transition duration-200 flex items-center justify-center gap-2 text-white text-lg font-semibold hover:cursor-pointer
+              hover:bg-[radial-gradient(72.97%_270%_at_50%_50%,_rgb(178,139,255)_0%,_rgb(120,50,255)_80%)]
+              hover:shadow-[rgba(178,139,255,0.8)_0px_4px_16px_0px,_rgb(178,139,255)_0px_2px_2px_0px_inset] 
+              hover:scale-105 
+              active:bg-[radial-gradient(72.97%_270%_at_50%_50%,_rgb(150,100,250)_0%,_rgb(90,20,220)_85%)]
+              active:shadow-[rgba(150,100,250,0.75)_0px_2px_10px_0px,_rgb(150,100,250)_0px_1px_1px_0px_inset] 
+              active:scale-95"
+          >
+            ✨ Generate
+            <motion.svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="text-gray-300 h-3 w-3 sm:h-4 sm:w-4"
             >
-              {placeholders[currentPlaceholder]}
-            </motion.p>
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <motion.path
+                d="M5 12l14 0"
+                initial={{ strokeDasharray: "50%", strokeDashoffset: "50%" }}
+                animate={{ strokeDashoffset: value ? 0 : "50%" }}
+                transition={{ duration: 0.3, ease: "linear" }}
+              />
+              <path d="M13 18l6 -6" />
+              <path d="M13 6l6 6" />
+            </motion.svg>
+          </button>
+
+          {loading && (
+            <button
+              className="fixed top-20 right-20 text-white z-[120]"
+              onClick={() => setLoading(false)}
+            >
+              <IconSquareRoundedX className="h-10 w-10" />
+            </button>
           )}
-        </AnimatePresence>
-      </div>
+
+          <div className="absolute inset-0 flex items-center rounded-full pointer-events-none">
+            <AnimatePresence mode="wait">
+              {!value && (
+                <motion.p
+                  initial={{ y: 5, opacity: 0 }}
+                  key={`current-placeholder-${currentPlaceholder}`}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: -15, opacity: 0 }}
+                  transition={{ duration: 0.3, ease: "linear" }}
+                  className="text-zinc-500 text-xs sm:text-sm font-normal pl-4 sm:pl-10 text-left w-[calc(100%-5rem)] truncate"
+                >
+                  {placeholders[currentPlaceholder]}
+                </motion.p>
+              )}
+            </AnimatePresence>
+          </div>
+        </>
+      )}
     </form>
   );
 }

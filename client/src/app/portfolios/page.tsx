@@ -1,16 +1,27 @@
 "use client"
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import portfolio1 from "@/assets/Portfolio1.png"
 import { useMyContext } from "@/context/MyContext";
 
 export default function Portfolios() {
-  const { userProfile } = useMyContext();
+  const { userProfile, setUserProfile } = useMyContext();
+  
   console.log("User Profile in Templates: ", userProfile);
 
-  // Show loader or fallback if UserId is missing
+  useEffect(() => {
+    async function fetchUserProfile() {
+      if (!userProfile?.email) return; // Wait until email is available
+      const res = await fetch(`/api/user?email=${userProfile.email}`);
+      const data = await res.json();
+      setUserProfile(data);
+      console.log('Set user profile:', data);
+    }
+    fetchUserProfile();
+  }, [userProfile?.email]);
+
   if (!userProfile) {
     return (
       <div className="min-h-screen flex items-center justify-center text-white">
@@ -35,48 +46,53 @@ export default function Portfolios() {
       thumbnail: portfolio1,
       previewLink: `http://localhost:5173/?id=${userProfile.UserId}`,
       customizeLink: "",
-    },
+    }
   ];
 
   return (
-    <div className="relative min-h-screen flex flex-col items-center justify-center text-white px-6">
+    <div className="container mx-auto py-16 px-4">
       <h1 className="text-4xl font-bold mb-8 text-center">Portfolio Templates</h1>
+      
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-6xl">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {templates.map((template) => (
           <motion.div
             key={template.id}
-            className="bg-[#121212] rounded-xl overflow-hidden shadow-lg p-4 border border-[#7d47ea]"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="bg-[#171717] rounded-xl overflow-hidden shadow-xl border border-[#333]"
           >
-            <Image
-              src={template.thumbnail}
-              alt={template.name}
-              width={400}
-              height={250}
-              className="rounded-lg object-cover"
-            />
-
-            <h2 className="text-lg font-semibold mt-4">{template.name}</h2>
-
-            <div className="flex gap-4 mt-4">
-              <motion.a
-                href={template.previewLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.1 }}
-                className="flex-1 text-center bg-[#7d47ea] hover:bg-[#5a32c4] transition-all py-2 rounded-lg font-semibold"
-              >
-                Preview
-              </motion.a>
-              <motion.a
-                href={template.customizeLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.1 }}
-                className="flex-1 text-center bg-[#222] hover:bg-[#333] border border-[#7d47ea] py-2 rounded-lg font-semibold"
-              >
-                Customize
-              </motion.a>
+            <div className="relative h-48 w-full">
+              <Image
+                src={template.thumbnail}
+                alt={template.name}
+                fill
+                style={{ objectFit: "cover" }}
+              />
+            </div>
+            <div className="p-6">
+              <h3 className="text-xl font-bold mb-2">{template.name}</h3>
+              <div className="flex gap-4 mt-4">
+                <motion.a
+                  href={template.previewLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ scale: 1.1 }}
+                  className="flex-1 text-center bg-[#7d47ea] hover:bg-[#5a32c4] transition-all py-2 rounded-lg font-semibold"
+                >
+                  Preview
+                </motion.a>
+                <motion.a
+                  href={template.customizeLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ scale: 1.1 }}
+                  className="flex-1 text-center bg-[#222] hover:bg-[#333] border border-[#7d47ea] py-2 rounded-lg font-semibold"
+                >
+                  Customize
+                </motion.a>
+              </div>
             </div>
           </motion.div>
         ))}

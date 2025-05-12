@@ -19,43 +19,105 @@ export default function Navbar() {
       const fetchUserData = async () => {
         try {
           const email = user.primaryEmailAddress?.emailAddress || "";
-          const response = await fetch(
-            `${
-              process.env.NEXT_PUBLIC_BACKEND_URL
-            }/user/verify/?email=${encodeURIComponent(email)}`
-          );
-
-          if (response.ok) {
-            const data = await response.json();
-            setUserProfile(data);
-          } else {
-            const newUser = {
-              name: user.fullName,
-              picture: user.imageUrl,
+          const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+          
+          if (!backendUrl) {
+            console.error("Backend URL is not defined in environment variables");
+            // Create a local user profile from Clerk data as fallback
+            setUserProfile({
+              name: user.fullName || "",
+              picture: user.imageUrl || "",
               email: email,
+            });
+            return;
+          }
+          
+          try {
+            // Set up fetch with timeout
+            const fetchWithTimeout = async (url: string, options: RequestInit = {}, timeout = 5000) => {
+              const controller = new AbortController();
+              const { signal } = controller;
+              
+              const timeoutId = setTimeout(() => controller.abort(), timeout);
+              
+              try {
+                const response = await fetch(url, { ...options, signal });
+                clearTimeout(timeoutId);
+                return response;
+              } catch (error) {
+                clearTimeout(timeoutId);
+                throw error;
+              }
             };
 
-            const createResponse = await fetch(
-              `${process.env.NEXT_PUBLIC_BACKEND_URL}/user`,
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify(newUser),
-              }
+            const response = await fetchWithTimeout(
+              `${backendUrl}/user/verify/?email=${encodeURIComponent(email)}`
             );
 
-            if (createResponse.status === 201) {
-              const createdUser = await createResponse.json();
-              console.log(createdUser);
-              setUserProfile(createdUser);
+            if (response.ok) {
+              const data = await response.json();
+              setUserProfile(data);
             } else {
-              console.error("Error creating user");
+              // User doesn't exist, create new user
+              try {
+                const newUser = {
+                  name: user.fullName || "",
+                  picture: user.imageUrl || "",
+                  email: email,
+                };
+
+                const createResponse = await fetchWithTimeout(
+                  `${backendUrl}/user`,
+                  {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(newUser),
+                  }
+                );
+
+                if (createResponse.status === 201) {
+                  const createdUser = await createResponse.json();
+                  setUserProfile(createdUser);
+                } else {
+                  console.error("Error creating user:", createResponse.status);
+                  // Use Clerk data as fallback
+                  setUserProfile({
+                    name: user.fullName || "",
+                    picture: user.imageUrl || "",
+                    email: email,
+                  });
+                }
+              } catch (createError) {
+                console.error("Error creating user:", createError);
+                // Use Clerk data as fallback
+                setUserProfile({
+                  name: user.fullName || "",
+                  picture: user.imageUrl || "",
+                  email: email,
+                });
+              }
             }
+          } catch (fetchError) {
+            console.error("Error verifying user:", fetchError);
+            // Use Clerk data as fallback
+            setUserProfile({
+              name: user.fullName || "",
+              picture: user.imageUrl || "",
+              email: email,
+            });
           }
         } catch (error) {
-          console.error("Error fetching user data:", error);
+          console.error("Error in user data handling:", error);
+          // Use basic user info as fallback if available
+          if (user) {
+            setUserProfile({
+              name: user.fullName || "User",
+              picture: user.imageUrl || "",
+              email: user.primaryEmailAddress?.emailAddress || "",
+            });
+          }
         }
       };
 

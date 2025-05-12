@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    
     "dev": "next dev",
     "build": "NEXT_PUBLIC_ESLINT_IGNORE=1 next build",
     "start": "next start",
@@ -11,7 +10,9 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^6.11.1",
+    "@clerk/themes": "^2.2.43",
     "@mistralai/mistralai": "^1.5.0",
+    "@radix-ui/react-dialog": "^1.1.13",
     "@radix-ui/react-slot": "^1.1.2",
     "@tabler/icons-react": "^3.29.0",
     "@tsparticles/engine": "^3.8.1",
