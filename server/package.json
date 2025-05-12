@@ -1,13 +1,13 @@
 {
-  "name": "career-craft-ai-backend",
+  "name": "portview-ai-backend",
   "version": "1.0.0",
   "description": "Backend for Career Craft AI - an AI-powered career guidance platform with career advising, roadmap generation, portfolio site creation, and interview preparation chatbot.",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "build": "vite build",
-    "serve": "vite preview"
+    "build": "echo 'Building server...'",
+    "serve": "node index.js"
   },
   "keywords": [
     "AI",
@@ -18,7 +18,7 @@
     "express",
     "backend"
   ],
-  "author": "Yagna Kusumanchi",
+  "author": "Ritik Parmar",
   "license": "MIT",
   "dependencies": {
     "axios": "^1.7.9",
