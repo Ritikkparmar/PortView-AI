@@ -18,10 +18,8 @@ async function connectMongoDB() {
             throw new Error("MongoDB URI is missing. Please check your environment variables.");
         }
         
-        // Add serverless-friendly options
+        // Updated options without deprecated flags
         const options = {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
             serverSelectionTimeoutMS: 5000,
         };
         

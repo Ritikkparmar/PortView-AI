@@ -1,13 +1,13 @@
 {
-  "name": "portview-ai-backend",
+  "name": "career-craft-ai-server",
   "version": "1.0.0",
-  "description": "Backend for Career Craft AI - an AI-powered career guidance platform with career advising, roadmap generation, portfolio site creation, and interview preparation chatbot.",
+  "description": "Backend server for Career Craft AI",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "build": "echo 'Building server...'",
-    "serve": "node index.js"
+    "build": "npm install && npm audit fix",
+    "vercel-build": "npm install && npm audit fix"
   },
   "keywords": [
     "AI",
@@ -24,16 +24,19 @@
     "axios": "^1.7.9",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.7",
-    "express": "^4.21.2",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.9.6",
+    "mongoose": "^7.0.3",
     "morgan": "^1.10.0",
-    "nodemon": "^3.1.9",
+    "nodemon": "^2.0.22",
     "uuid": "^11.0.5"
   },
   "devDependencies": {
     "eslint": "^8.52.0",
     "prettier": "^3.2.5"
+  },
+  "engines": {
+    "node": ">=18.x"
   }
 }
